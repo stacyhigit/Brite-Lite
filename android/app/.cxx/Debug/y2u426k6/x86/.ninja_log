@@ -1,0 +1,14 @@
+# ninja log v5
+3	35	0	C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/CMakeFiles/cmake.verify_globs	50a511288a847b1
+74	6948	7354962405865039	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/8483f505b60900096b8ce2d67448cdae/source/codegen/jni/react/renderer/components/rnsvg/States.cpp.o	77c37e219dde77ed
+7	7539	7354962411565589	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/d636b54868b655594734be7efbaf1f0a/common/cpp/react/renderer/components/rnsvg/RNSVGImageState.cpp.o	cf19f594010f45fa
+24	7609	7354962412461853	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/8483f505b60900096b8ce2d67448cdae/source/codegen/jni/react/renderer/components/rnsvg/EventEmitters.cpp.o	8ad8b929ded43ed2
+53	8188	7354962418053914	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/638e7c5bb0a173952ba59a4f75afcb3e/codegen/jni/react/renderer/components/rnsvg/rnsvgJSI-generated.cpp.o	145820eb3e574764
+29	9875	7354962435034662	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/8483f505b60900096b8ce2d67448cdae/source/codegen/jni/react/renderer/components/rnsvg/ShadowNodes.cpp.o	f6a7fbf53b270e2a
+2	10893	7354962445115485	CMakeFiles/appmodules.dir/OnLoad.cpp.o	67eb2dcd871a2f14
+11	11889	7354962455158525	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/d636b54868b655594734be7efbaf1f0a/common/cpp/react/renderer/components/rnsvg/RNSVGImageShadowNode.cpp.o	cd2569ac54c5e4ba
+4	12339	7354962459553591	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/rnsvg.cpp.o	c636d09112333057
+20	13826	7354962474406922	rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir/8483f505b60900096b8ce2d67448cdae/source/codegen/jni/react/renderer/components/rnsvg/Props.cpp.o	60cfc093c4e04a21
+13826	14056	7354962476744838	C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/build/intermediates/cxx/Debug/y2u426k6/obj/x86/libreact_codegen_rnsvg.so	a26c5a9b81f1b37a
+15	33797	7354962673161047	CMakeFiles/appmodules.dir/C_/Stacy/react-native/projects/publish/Brite-Lite/android/app/build/generated/rncli/src/main/jni/rncli.cpp.o	de8185e6d1ed4786
+33798	34078	7354962676469222	C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/build/intermediates/cxx/Debug/y2u426k6/obj/x86/libappmodules.so	eb6e39834ffa7cfa

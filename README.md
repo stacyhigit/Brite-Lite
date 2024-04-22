@@ -1,8 +1,5 @@
-# [New Architecture Example](https://reactnative.dev/docs/the-new-architecture/landing-page)
+# Brite-Lite
 
-## 🚀 How to use
+Create a glowing picture with brightly colored lights
 
-> `npx create-expo-app@latest -e with-new-arch`
-
-- Install packages with `yarn` or `npm install`.
-- Run `npx expo run:ios` and/or `npx expo run:android`. Requires native toolchains to be installed.
+<img src="https://raw.githubusercontent.com/stacyhigit/EatTheToad/main/Brite-Lite/images/hearts.png" width="200" /> <img src="https://raw.githubusercontent.com/stacyhigit/EatTheToad/main/Brite-Lite/images/fish.png" width="200" /> <img src="https://raw.githubusercontent.com/stacyhigit/EatTheToad/main/Brite-Lite/images/snail.png" width="200" /> <img src="https://raw.githubusercontent.com/stacyhigit/EatTheToad/main/Brite-Lite/images/rainbow.png" width="200" />

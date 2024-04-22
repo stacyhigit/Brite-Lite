@@ -1,0 +1,6 @@
+C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/CMakeFiles/appmodules.dir
+C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/CMakeFiles/edit_cache.dir
+C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/CMakeFiles/rebuild_cache.dir
+C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/rnsvg_autolinked_build/CMakeFiles/react_codegen_rnsvg.dir
+C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/rnsvg_autolinked_build/CMakeFiles/edit_cache.dir
+C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/x86/rnsvg_autolinked_build/CMakeFiles/rebuild_cache.dir

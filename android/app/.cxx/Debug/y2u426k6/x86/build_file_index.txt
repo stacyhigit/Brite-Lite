@@ -1,0 +1,2 @@
+C:\Stacy\react-native\projects\publish\Brite-Lite\node_modules\react-native-svg\android\src\main\jni\CMakeLists.txt
+C:\Stacy\react-native\projects\publish\Brite-Lite\node_modules\react-native\ReactAndroid\cmake-utils\default-app-setup\CMakeLists.txt
