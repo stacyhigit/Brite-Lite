@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    height: 55,
+    paddingVertical: 10,
   },
   circle: {
     height: 24,
