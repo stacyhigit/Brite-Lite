@@ -1,4 +1,4 @@
-import { color } from "./color";
+import { color, colorEmpty } from "./color";
 
 export class Box {
   constructor(row, column, color) {
@@ -14,6 +14,6 @@ export class Box {
 
 export class BoxEmpty extends Box {
   constructor(row, column) {
-    super(row, column, new color(null, null));
+    super(row, column, new colorEmpty());
   }
 }

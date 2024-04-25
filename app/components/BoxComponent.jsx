@@ -4,10 +4,20 @@ import Svg, { Circle } from "react-native-svg";
 import SvgDefs from "./SvgDefs";
 import { boxSize } from "../constants/values";
 
-export default function BoxComponent({ box, handlePointerEnter }) {
+export default function BoxComponent({
+  box,
+  handlePointerEnter,
+  handlePointerDown,
+}) {
   return (
-    <View style={styles.boxContainer} onPointerEnter={handlePointerEnter}>
-      {box.color.name ? (
+    <View
+      style={styles.boxContainer}
+      onPointerEnter={handlePointerEnter}
+      onPointerDown={handlePointerDown}
+    >
+      {box.color.name === "empty" ? (
+        <View style={styles.innerBoxEmpty} />
+      ) : (
         <Svg height={boxSize.height} width={boxSize.width}>
           <SvgDefs />
           <Circle
@@ -17,12 +27,17 @@ export default function BoxComponent({ box, handlePointerEnter }) {
             fill={`url(#${box.color.name})`}
           />
         </Svg>
-      ) : (
-        <View style={styles.innerBoxEmpty} />
       )}
     </View>
   );
 }
+
+BoxComponent.propTypes = {
+  box: PropTypes.object,
+  handlePointerEnter: PropTypes.func,
+  handlePointerDown: PropTypes.func,
+};
+
 const styles = StyleSheet.create({
   boxContainer: {
     alignItems: "center",
@@ -38,8 +53,3 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
 });
-
-BoxComponent.propTypes = {
-  box: PropTypes.object,
-  handlePointerEnter: PropTypes.func,
-};

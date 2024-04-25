@@ -1,63 +1,65 @@
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
-import { Entypo } from "@expo/vector-icons";
 
 import { boxColors } from "../constants/colors";
 import { color } from "../models/color";
 
-export default function ColorPicker({ activeColor, setActiveColor }) {
+export default function ColorPicker({
+  activeColor,
+  handleSelectColor,
+  isZoomed,
+}) {
   return (
     <ScrollView horizontal={true}>
       <View style={styles.container}>
         {Object.entries(boxColors).map(([name, hex]) => (
-          <Pressable
+          <View
             key={name}
-            style={({ pressed }) => [
-              styles.circle,
-              { backgroundColor: hex },
-              activeColor.hex === hex && styles.active,
-              pressed && styles.pressed,
-            ]}
-            onPress={() => setActiveColor(new color(name, hex))}
-          />
+            style={!isZoomed && activeColor.hex === hex && styles.active}
+          >
+            <Pressable
+              style={({ pressed }) => [
+                styles.circle,
+                { backgroundColor: hex },
+                pressed && styles.pressed,
+              ]}
+              onPress={() => handleSelectColor(new color(name, hex))}
+            />
+          </View>
         ))}
-        <Entypo
-          name="eraser"
-          size={24}
-          color="white"
-          onPress={() => setActiveColor(new color(null, null))}
-        />
       </View>
     </ScrollView>
   );
 }
 
+ColorPicker.propTypes = {
+  activeColor: PropTypes.object,
+  handleSelectColor: PropTypes.func,
+  isZoomed: PropTypes.bool,
+};
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: 10,
     alignItems: "center",
-    minWidth: "100%",
+    gap: 10,
     height: 55,
-    backgroundColor: "black",
-    padding: 12,
   },
   circle: {
     height: 24,
     width: 24,
     borderRadius: 11,
-    backgroundColor: "red",
   },
   active: {
-    borderWidth: 3,
+    alignItems: "center",
+    height: 32,
+    width: 32,
     borderColor: "white",
+    borderWidth: 1.5,
+    borderRadius: 24,
+    padding: 2,
   },
   pressed: {
     opacity: 0.7,
   },
 });
-
-ColorPicker.propTypes = {
-  activeColor: PropTypes.object,
-  setActiveColor: PropTypes.func,
-};

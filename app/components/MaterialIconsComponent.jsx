@@ -1,25 +1,26 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
-export default function ButtonComponent({ onPress, children, color }) {
+export default function MaterialIconsComponent({
+  onPress,
+  containerStyle,
+  icon,
+}) {
   return (
     <Pressable
-      style={({ pressed }) => [
-        styles.button,
-        { backgroundColor: color },
-        pressed && styles.pressed,
-      ]}
+      style={({ pressed }) => [containerStyle, pressed && styles.pressed]}
       onPress={onPress}
     >
-      <Text style={styles.text}>{children}</Text>
+      <MaterialIcons name={icon.name} size={icon.size} color={icon.color} />
     </Pressable>
   );
 }
 
-ButtonComponent.propTypes = {
-  children: PropTypes.string,
+MaterialIconsComponent.propTypes = {
   onPress: PropTypes.func,
-  color: PropTypes.string,
+  containerStyle: PropTypes.object,
+  icon: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
