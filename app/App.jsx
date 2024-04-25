@@ -6,25 +6,48 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
+  useWindowDimensions,
   StatusBar as rnStatusBar,
 } from "react-native";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import { boxColors, buttonColors } from "./constants/colors";
 import ModalComponent from "./components/ModalComponent";
 import Header from "./components/Header";
-import { Box, BoxEmpty } from "./models/box";
-import { color } from "./models/color";
+import { BoxEmpty } from "./models/box";
+import { color, colorEmpty } from "./models/color";
 import { boxSize } from "./constants/values";
 import BoxComponent from "./components/BoxComponent";
+import Zoom from "./components/Zoom";
+import Footer from "./components/Footer";
+
+const statusBarHeight =
+  Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
 
 export default function App() {
-  const nullColor = new color(null, null);
+  const { width, height } = useWindowDimensions();
   const defaultColor = new color("ett_green", boxColors.ett_green);
 
-  const [boxes, setBoxes] = useState([[new Box(0, 0, nullColor)]]);
+  const [boxes, setBoxes] = useState();
   const [activeColor, setActiveColor] = useState(defaultColor);
   const [showEraseModal, setShowEraseModal] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  useLayoutEffect(() => {
+    const columnCount = Math.floor(width / boxSize.width);
+    const rowCount = Math.floor(height / boxSize.height);
+
+    if (columnCount > 0) {
+      setBoxes(
+        Array.from({ length: columnCount }, (_, column) =>
+          Array.from(
+            { length: rowCount },
+            (_, row) => new BoxEmpty(row, column)
+          )
+        )
+      );
+    }
+  }, []);
 
   const handlePointerEnter = (id) => {
     setBoxes((prevBoxes) =>
@@ -36,67 +59,70 @@ export default function App() {
     );
   };
 
-  const handleErase = () => {
+  const handleSelectColor = (newColor) => {
+    setActiveColor(newColor);
+    setIsZoomed(false);
+  };
+
+  const handleEraseAll = () => {
     setShowEraseModal(true);
   };
 
-  const eraseBoxes = () => {
+  const eraseAllBoxes = () => {
     setBoxes((prevBoxes) =>
       prevBoxes.map((row) =>
-        row.map((prevBox) => ({ ...prevBox, color: nullColor }))
+        row.map((prevBox) => ({ ...prevBox, color: new colorEmpty() }))
       )
     );
     setShowEraseModal(false);
   };
 
-  const handleOnLayout = (event) => {
-    const { width, height } = event.nativeEvent.layout;
-    const columnCount = Math.floor(width / boxSize.width);
-    const rowCount = Math.floor(height / boxSize.height);
-
-    setBoxes(
-      Array.from({ length: columnCount }, (_, column) =>
-        Array.from({ length: rowCount }, (_, row) => new BoxEmpty(row, column))
-      )
-    );
-  };
-
   return (
     <SafeAreaView style={styles.outerContainer}>
+      <Header
+        activeColor={activeColor}
+        handleSelectColor={handleSelectColor}
+        isZoomed={isZoomed}
+      />
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Header
-          activeColor={activeColor}
-          setActiveColor={setActiveColor}
-          handleErase={handleErase}
-        />
-
-        <Pressable>
-          {({ pressed }) => (
-            <View style={styles.boxContainer} onLayout={handleOnLayout}>
-              {boxes.length < 2 && (
-                <View style={styles.activityIndicatorContainer}>
-                  <ActivityIndicator size="large" color={boxColors.ett_blue} />
-                </View>
-              )}
-              {boxes.map((row) => (
-                <View key={row[0].column}>
-                  {row.map((box) => {
+        <Zoom isZoomed={isZoomed}>
+          <Pressable>
+            {({ pressed }) => (
+              <View style={styles.boxContainer}>
+                {!boxes ? (
+                  <View style={styles.activityIndicatorContainer}>
+                    <ActivityIndicator
+                      size="large"
+                      color={boxColors.ett_blue}
+                    />
+                  </View>
+                ) : (
+                  boxes.map((row) => {
                     return (
-                      <BoxComponent
-                        key={box.id}
-                        box={box}
-                        handlePointerEnter={() =>
-                          pressed && handlePointerEnter(box.id)
-                        }
-                      />
+                      <View key={row[0]?.id}>
+                        {row.map((box) => {
+                          return (
+                            <BoxComponent
+                              key={box.id}
+                              box={box}
+                              handlePointerEnter={() =>
+                                !isZoomed &&
+                                pressed &&
+                                handlePointerEnter(box.id)
+                              }
+                            />
+                          );
+                        })}
+                      </View>
                     );
-                  })}
-                </View>
-              ))}
-            </View>
-          )}
-        </Pressable>
+                  })
+                )}
+              </View>
+            )}
+          </Pressable>
+        </Zoom>
+
         <ModalComponent
           isVisible={showEraseModal}
           title={"Erase Board?"}
@@ -109,24 +135,28 @@ export default function App() {
           button2={{
             text: "ERASE",
             color: buttonColors.red,
-            onPress: eraseBoxes,
+            onPress: eraseAllBoxes,
           }}
         />
       </View>
+      <Footer
+        handleEraseAll={handleEraseAll}
+        isZoomed={isZoomed}
+        setIsZoomed={setIsZoomed}
+        activeColor={activeColor}
+      />
     </SafeAreaView>
   );
 }
-const statusBarHeight =
-  Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
 
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     backgroundColor: "black",
+    marginTop: statusBarHeight,
   },
   container: {
     flex: 1,
-    marginTop: statusBarHeight,
     alignItems: "center",
   },
   boxContainer: {
@@ -137,11 +167,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
+    overflow: "hidden",
   },
   activityIndicatorContainer: {
     flex: 1,
     height: "50%",
-    justifyContent: "center",
     padding: 10,
   },
 });

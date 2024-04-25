@@ -1,52 +1,62 @@
 import { StyleSheet, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import ColorPicker from "./ColorPicker";
-
-export default function Header({ activeColor, setActiveColor, handleErase }) {
+import { colorEmpty } from "../models/color";
+export default function Header({ activeColor, handleSelectColor, isZoomed }) {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.colorPickerContainer}>
-        <MaterialIcons
-          name="color-lens"
-          size={28}
-          color={activeColor.hex ? activeColor.hex : "white"}
-        />
         <ColorPicker
           activeColor={activeColor}
-          setActiveColor={setActiveColor}
+          handleSelectColor={handleSelectColor}
+          isZoomed={isZoomed}
         />
       </View>
-      <MaterialIcons
-        onPress={handleErase}
-        style={styles.deleteIcon}
-        name="delete-forever"
-        size={28}
-        color="white"
-      />
+      <View
+        style={
+          !isZoomed && activeColor.name === "empty" && styles.eraserContainer
+        }
+      >
+        <Entypo
+          name="eraser"
+          size={24}
+          color="white"
+          onPress={() => handleSelectColor(new colorEmpty())}
+        />
+      </View>
     </View>
   );
 }
+
 Header.propTypes = {
   activeColor: PropTypes.object,
-  setActiveColor: PropTypes.func,
+  handleSelectColor: PropTypes.func,
   handleErase: PropTypes.func,
+  isZoomed: PropTypes.bool,
 };
+
 const styles = StyleSheet.create({
   headerContainer: {
-    width: "100%",
+    minWidth: "100%",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    gap: 8,
     paddingHorizontal: 18,
+    backgroundColor: "black",
   },
   colorPickerContainer: {
-    flexDirection: "row",
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
+    maxWidth: "80%",
   },
-  deleteIcon: {
-    marginLeft: 18,
+  eraserContainer: {
+    height: 32,
+    width: 32,
+    borderColor: "white",
+    borderWidth: 1.5,
+    borderRadius: 24,
+    padding: 2,
   },
 });

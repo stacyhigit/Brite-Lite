@@ -4,3 +4,9 @@ export class color {
     this.hex = hex;
   }
 }
+
+export class colorEmpty extends color {
+  constructor() {
+    super("empty", "#ffffff");
+  }
+}
