@@ -27,17 +27,11 @@ const statusBarHeight =
 export default function App() {
   const { width, height } = useWindowDimensions();
   const defaultColor = new color("ett_green", boxColors.ett_green);
-  const defaultZoom = {
-    translateX: 0,
-    translateY: 0,
-    scale: 1,
-  };
 
   const [boxes, setBoxes] = useState();
   const [activeColor, setActiveColor] = useState(defaultColor);
   const [showEraseModal, setShowEraseModal] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomVals, setZoomVals] = useState(defaultZoom);
 
   useLayoutEffect(() => {
     const columnCount = Math.floor(width / boxSize.width);
@@ -92,7 +86,7 @@ export default function App() {
       />
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Zoom isZoomed={isZoomed} zoomVals={zoomVals}>
+        <Zoom isZoomed={isZoomed}>
           <Pressable>
             {({ pressed }) => (
               <View style={styles.boxContainer}>

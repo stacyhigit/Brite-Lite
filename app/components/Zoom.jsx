@@ -15,7 +15,7 @@ import {
 } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
-export default function Zoom({ isZoomed, zoomVals, children }) {
+export default function Zoom({ isZoomed, children }) {
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 
   const zoomedWidth = useSharedValue(windowWidth);

@@ -4,17 +4,9 @@ import Svg, { Circle } from "react-native-svg";
 import SvgDefs from "./SvgDefs";
 import { boxSize } from "../constants/values";
 
-export default function BoxComponent({
-  box,
-  handlePointerEnter,
-  handlePointerDown,
-}) {
+export default function BoxComponent({ box, handlePointerEnter }) {
   return (
-    <View
-      style={styles.boxContainer}
-      onPointerEnter={handlePointerEnter}
-      onPointerDown={handlePointerDown}
-    >
+    <View style={styles.boxContainer} onPointerEnter={handlePointerEnter}>
       {box.color.name === "empty" ? (
         <View style={styles.innerBoxEmpty} />
       ) : (
@@ -35,7 +27,6 @@ export default function BoxComponent({
 BoxComponent.propTypes = {
   box: PropTypes.object,
   handlePointerEnter: PropTypes.func,
-  handlePointerDown: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
