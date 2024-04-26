@@ -13,4 +13,4 @@ web-build/
 # macOS
 .DS_Store
 
- android/app/.cxx
+android/app/.cxx
