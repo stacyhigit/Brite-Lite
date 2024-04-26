@@ -44,6 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
+  include("C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/armeabi-v7a/rngesturehandler_codegen_autolinked_build/cmake_install.cmake")
   include("C:/Stacy/react-native/projects/publish/Brite-Lite/android/app/.cxx/Debug/y2u426k6/armeabi-v7a/rnsvg_autolinked_build/cmake_install.cmake")
 
 endif()
