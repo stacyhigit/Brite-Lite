@@ -9,7 +9,8 @@ import {
   useWindowDimensions,
   StatusBar as rnStatusBar,
 } from "react-native";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import * as NavigationBar from "expo-navigation-bar";
 
 import { boxColors, buttonColors } from "./constants/colors";
 import ModalComponent from "./components/ModalComponent";
@@ -25,6 +26,20 @@ const statusBarHeight =
   Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
 
 export default function App() {
+  const visibility = NavigationBar.useVisibility();
+
+  useEffect(() => {
+    if (visibility === "visible") {
+      const interval = setTimeout(() => {
+        NavigationBar.setVisibilityAsync("hidden");
+      }, /* 3 Seconds */ 3000);
+
+      return () => {
+        clearTimeout(interval);
+      };
+    }
+  }, [visibility]);
+
   const { width, height } = useWindowDimensions();
   const defaultColor = new color("ett_green", boxColors.ett_green);
 
@@ -33,10 +48,10 @@ export default function App() {
   const [showEraseModal, setShowEraseModal] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  useLayoutEffect(() => {
-    const columnCount = Math.floor(width / boxSize.width);
-    const rowCount = Math.floor(height / boxSize.height);
+  const columnCount = Math.floor(width / boxSize.width);
+  const rowCount = Math.floor(height / boxSize.height);
 
+  useLayoutEffect(() => {
     if (columnCount > 0) {
       setBoxes(
         Array.from({ length: columnCount }, (_, column) =>

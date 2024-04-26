@@ -6,6 +6,9 @@
     "description": "Create a glowing picture with brightly colored lights",
     "backgroundColor": "#000000",
     "orientation": "portrait",
+		"androidStatusBar": {
+			"hidden": true
+		},
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -35,7 +38,16 @@
             "newArchEnabled": true
           }
         }
-      ]
+      ],
+			[
+				"expo-navigation-bar",
+				{
+					"position": "absolute",
+					"visibility": "hidden",
+					"behavior": "inset-swipe",
+					"backgroundColor": "#00000095"
+				}
+			]
     ]
   }
 }
