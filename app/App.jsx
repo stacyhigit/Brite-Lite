@@ -1,8 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
-  ActivityIndicator,
   Platform,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   View,
@@ -13,14 +11,14 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 
 import { boxColors, buttonColors } from "./constants/colors";
-import ModalComponent from "./components/ModalComponent";
+import ModalComponent from "./components/ui/ModalComponent";
 import Header from "./components/Header";
 import { BoxEmpty } from "./models/box";
 import { color, colorEmpty } from "./models/color";
 import { boxSize } from "./constants/values";
-import BoxComponent from "./components/BoxComponent";
-import Zoom from "./components/Zoom";
+import Zoom from "./components/ui/Zoom";
 import Footer from "./components/Footer";
+import Board from "./components/Board";
 
 const statusBarHeight =
   Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
@@ -32,7 +30,7 @@ export default function App() {
     if (visibility === "visible") {
       const interval = setTimeout(() => {
         NavigationBar.setVisibilityAsync("hidden");
-      }, /* 3 Seconds */ 3000);
+      }, 3000);
 
       return () => {
         clearTimeout(interval);
@@ -50,15 +48,14 @@ export default function App() {
 
   const columnCount = Math.floor(width / boxSize.width);
   const rowCount = Math.floor(height / boxSize.height);
+  const boxCount = columnCount * rowCount;
 
   useLayoutEffect(() => {
     if (columnCount > 0) {
       setBoxes(
-        Array.from({ length: columnCount }, (_, column) =>
-          Array.from(
-            { length: rowCount },
-            (_, row) => new BoxEmpty(row, column)
-          )
+        Array.from(
+          { length: boxCount },
+          (_, count) => new BoxEmpty(count, count)
         )
       );
     }
@@ -66,10 +63,8 @@ export default function App() {
 
   const handlePointerEnter = (id) => {
     setBoxes((prevBoxes) =>
-      prevBoxes.map((row) =>
-        row.map((prevbox) =>
-          prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
-        )
+      prevBoxes.map((prevbox) =>
+        prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
       )
     );
   };
@@ -85,9 +80,7 @@ export default function App() {
 
   const eraseAllBoxes = () => {
     setBoxes((prevBoxes) =>
-      prevBoxes.map((row) =>
-        row.map((prevBox) => ({ ...prevBox, color: new colorEmpty() }))
-      )
+      prevBoxes.map((prevBox) => ({ ...prevBox, color: new colorEmpty() }))
     );
     setShowEraseModal(false);
   };
@@ -102,40 +95,12 @@ export default function App() {
       <StatusBar style="light" />
       <View style={styles.container}>
         <Zoom isZoomed={isZoomed}>
-          <Pressable>
-            {({ pressed }) => (
-              <View style={styles.boxContainer}>
-                {!boxes ? (
-                  <View style={styles.activityIndicatorContainer}>
-                    <ActivityIndicator
-                      size="large"
-                      color={boxColors.ett_blue}
-                    />
-                  </View>
-                ) : (
-                  boxes.map((row) => {
-                    return (
-                      <View key={row[0]?.id}>
-                        {row.map((box) => {
-                          return (
-                            <BoxComponent
-                              key={box.id}
-                              box={box}
-                              handlePointerEnter={() =>
-                                !isZoomed &&
-                                pressed &&
-                                handlePointerEnter(box.id)
-                              }
-                            />
-                          );
-                        })}
-                      </View>
-                    );
-                  })
-                )}
-              </View>
-            )}
-          </Pressable>
+          <Board
+            boxes={boxes}
+            columnCount={columnCount}
+            isZoomed={isZoomed}
+            handlePointerEnter={handlePointerEnter}
+          />
         </Zoom>
 
         <ModalComponent
@@ -173,20 +138,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-  },
-  boxContainer: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    minWidth: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    overflow: "hidden",
-  },
-  activityIndicatorContainer: {
-    flex: 1,
-    height: "50%",
-    padding: 10,
   },
 });

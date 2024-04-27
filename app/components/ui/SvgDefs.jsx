@@ -1,5 +1,5 @@
 import { Defs, Stop, RadialGradient } from "react-native-svg";
-import { boxColors } from "../constants/colors";
+import { boxColors } from "../../constants/colors";
 export default function SvgDefs() {
   return (
     <Defs>

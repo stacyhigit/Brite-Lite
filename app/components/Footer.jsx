@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 
 import { boxColors } from "../constants/colors";
-import MaterialIconsComponent from "./MaterialIconsComponent";
+import MaterialIconsComponent from "./ui/MaterialIconsComponent";
 
 export default function Footer({
   handleEraseAll,
