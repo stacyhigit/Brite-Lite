@@ -53,10 +53,7 @@ export default function App() {
   useLayoutEffect(() => {
     if (columnCount > 0) {
       setBoxes(
-        Array.from(
-          { length: boxCount },
-          (_, count) => new BoxEmpty(count, count)
-        )
+        Array.from({ length: boxCount }, (_, count) => new BoxEmpty(count))
       );
     }
   }, []);
