@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 import Svg, { Circle } from "react-native-svg";
-import SvgDefs from "./SvgDefs";
+import SvgDefs from "./ui/SvgDefs";
 import { boxSize } from "../constants/values";
 
 export default function BoxComponent({ box, handlePointerEnter }) {

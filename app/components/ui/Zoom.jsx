@@ -92,12 +92,12 @@ export default function Zoom({ isZoomed, children }) {
 
       translateX.value = clamp(-1 * boundX, boundX, toX);
       translateY.value = clamp(-1 * boundY, boundY, toY);
-      scale.value = clamp(0.9, toScale, 2.5);
+      scale.value = clamp(0.6, toScale, 2.5);
     })
     .onEnd(() => {
       isPinchActive.value = false;
 
-      if (scale.value < 1) {
+      if (scale.value < 0.6) {
         scale.value = withTiming(1);
         translateX.value = withTiming(0);
         translateY.value = withTiming(0);
