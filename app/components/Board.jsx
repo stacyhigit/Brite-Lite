@@ -1,19 +1,44 @@
-import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import PropTypes from "prop-types";
 
 import BoxComponent from "./BoxComponent";
 import { boxColors } from "../constants/colors";
+import { useLayoutEffect } from "react";
+import { BoxEmpty } from "../models/box";
+import { boxSize } from "../constants/values";
 
-export default function Board({
-  boxes,
-  columnCount,
-  isZoomed,
-  handlePointerEnter,
-}) {
+export default function Board({ boxes, setBoxes, isZoomed, activeColor }) {
+  const { width, height } = useWindowDimensions();
+  const rowCount = Math.floor(width / boxSize.width);
+  const columnCount = Math.floor(height / boxSize.height);
+  const boxCount = columnCount * rowCount;
+
+  useLayoutEffect(() => {
+    if (columnCount > 0) {
+      setBoxes(
+        Array.from({ length: boxCount }, (_, count) => new BoxEmpty(count))
+      );
+    }
+  }, []);
+
   const boxes2d = [];
   for (let i = 0; i < boxes?.length; i += columnCount) {
     boxes2d.push(boxes.slice(i, i + columnCount));
   }
+
+  const handlePointerEnter = (id) => {
+    setBoxes((prevBoxes) =>
+      prevBoxes.map((prevbox) =>
+        prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
+      )
+    );
+  };
 
   return (
     <Pressable>
@@ -50,9 +75,9 @@ export default function Board({
 
 Board.propTypes = {
   boxes: PropTypes.array,
-  columnCount: PropTypes.number,
+  setBoxes: PropTypes.func,
   isZoomed: PropTypes.bool,
-  handlePointerEnter: PropTypes.func,
+  activeColor: PropTypes.object,
 };
 const styles = StyleSheet.create({
   boxContainer: {
