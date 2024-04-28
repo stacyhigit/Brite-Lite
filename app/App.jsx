@@ -4,27 +4,37 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  useWindowDimensions,
   StatusBar as rnStatusBar,
 } from "react-native";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
+import * as SplashScreen from "expo-splash-screen";
 
 import { boxColors, buttonColors } from "./constants/colors";
+import { initDatabase } from "./util/database";
+import { color, colorEmpty } from "./models/color";
+
 import ModalComponent from "./components/ui/ModalComponent";
 import Header from "./components/Header";
-import { BoxEmpty } from "./models/box";
-import { color, colorEmpty } from "./models/color";
-import { boxSize } from "./constants/values";
 import Zoom from "./components/ui/Zoom";
 import Footer from "./components/Footer";
 import Board from "./components/Board";
+
+SplashScreen.preventAutoHideAsync();
 
 const statusBarHeight =
   Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
 
 export default function App() {
   const visibility = NavigationBar.useVisibility();
+
+  const defaultColor = new color("ett_green", boxColors.ett_green);
+
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [boxes, setBoxes] = useState();
+  const [activeColor, setActiveColor] = useState(defaultColor);
+  const [showEraseModal, setShowEraseModal] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
     if (visibility === "visible") {
@@ -38,33 +48,29 @@ export default function App() {
     }
   }, [visibility]);
 
-  const { width, height } = useWindowDimensions();
-  const defaultColor = new color("ett_green", boxColors.ett_green);
-
-  const [boxes, setBoxes] = useState();
-  const [activeColor, setActiveColor] = useState(defaultColor);
-  const [showEraseModal, setShowEraseModal] = useState(false);
-  const [isZoomed, setIsZoomed] = useState(false);
-
-  const columnCount = Math.floor(width / boxSize.width);
-  const rowCount = Math.floor(height / boxSize.height);
-  const boxCount = columnCount * rowCount;
-
-  useLayoutEffect(() => {
-    if (columnCount > 0) {
-      setBoxes(
-        Array.from({ length: boxCount }, (_, count) => new BoxEmpty(count))
-      );
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await initDatabase();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
     }
+
+    prepare();
   }, []);
 
-  const handlePointerEnter = (id) => {
-    setBoxes((prevBoxes) =>
-      prevBoxes.map((prevbox) =>
-        prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
-      )
-    );
-  };
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
 
   const handleSelectColor = (newColor) => {
     setActiveColor(newColor);
@@ -83,7 +89,7 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.outerContainer}>
+    <SafeAreaView style={styles.outerContainer} onLayout={onLayoutRootView}>
       <Header
         activeColor={activeColor}
         handleSelectColor={handleSelectColor}
@@ -94,9 +100,9 @@ export default function App() {
         <Zoom isZoomed={isZoomed}>
           <Board
             boxes={boxes}
-            columnCount={columnCount}
+            activeColor={activeColor}
+            setBoxes={setBoxes}
             isZoomed={isZoomed}
-            handlePointerEnter={handlePointerEnter}
           />
         </Zoom>
 
