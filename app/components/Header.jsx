@@ -1,29 +1,21 @@
 import { StyleSheet, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import ColorPicker from "./ColorPicker";
-import { colorEmpty } from "../models/color";
-export default function Header({ activeColor, handleSelectColor, isZoomed }) {
+import MaterialIconsComponent from "./ui/MaterialIconsComponent";
+
+export default function Header({ activeColor, handleSelectColor }) {
   return (
     <View style={styles.headerContainer}>
+      <MaterialIconsComponent
+        onPress={undefined}
+        containerStyle={undefined}
+        icon={{ name: "color-lens", size: 28, color: activeColor.hex }}
+      />
       <View style={styles.colorPickerContainer}>
         <ColorPicker
           activeColor={activeColor}
           handleSelectColor={handleSelectColor}
-          isZoomed={isZoomed}
-        />
-      </View>
-      <View
-        style={
-          !isZoomed && activeColor.name === "empty" && styles.eraserContainer
-        }
-      >
-        <Entypo
-          name="eraser"
-          size={24}
-          color="white"
-          onPress={() => handleSelectColor(new colorEmpty())}
         />
       </View>
     </View>
@@ -50,13 +42,5 @@ const styles = StyleSheet.create({
   },
   colorPickerContainer: {
     maxWidth: "80%",
-  },
-  eraserContainer: {
-    height: 32,
-    width: 32,
-    borderColor: "white",
-    borderWidth: 1.5,
-    borderRadius: 24,
-    padding: 2,
   },
 });

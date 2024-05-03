@@ -1,4 +1,4 @@
-import { color, colorEmpty } from "./color";
+import { Color, ColorEmpty } from "./color";
 
 export class Box {
   constructor(id, color) {
@@ -6,12 +6,12 @@ export class Box {
     this.color = color;
   }
   setColor(name, hex) {
-    this.color = new color(name, hex);
+    this.color = new Color(name, hex);
   }
 }
 
 export class BoxEmpty extends Box {
   constructor(id) {
-    super(id, new colorEmpty());
+    super(id, new ColorEmpty());
   }
 }
