@@ -4,9 +4,10 @@ import Svg, { Circle } from "react-native-svg";
 import SvgDefs from "./ui/SvgDefs";
 import { boxSize } from "../constants/values";
 
-export default function BoxComponent({ box, handlePointerEnter }) {
+export default function BoxComponent({ box }) {
+  // console.log("BoxComponent", box);
   return (
-    <View style={styles.boxContainer} onPointerEnter={handlePointerEnter}>
+    <View style={styles.boxContainer}>
       {box.color.name === "empty" ? (
         <View style={styles.innerBoxEmpty} />
       ) : (
@@ -26,21 +27,20 @@ export default function BoxComponent({ box, handlePointerEnter }) {
 
 BoxComponent.propTypes = {
   box: PropTypes.object,
-  handlePointerEnter: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
   boxContainer: {
     alignItems: "center",
     justifyContent: "center",
-    height: 20,
-    width: 20,
+    height: boxSize.height,
+    width: boxSize.width,
     backgroundColor: "black",
   },
   innerBoxEmpty: {
     height: 5,
     width: 5,
     backgroundColor: "#484848",
-    borderRadius: 24,
+    borderRadius: boxSize.width,
   },
 });

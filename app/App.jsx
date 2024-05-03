@@ -6,21 +6,17 @@ import {
   View,
   StatusBar as rnStatusBar,
 } from "react-native";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
-import * as SplashScreen from "expo-splash-screen";
 
 import { boxColors, buttonColors } from "./constants/colors";
-import { initDatabase } from "./util/database";
-import { color, colorEmpty } from "./models/color";
+import { Color, ColorEmpty } from "./models/color";
 
 import ModalComponent from "./components/ui/ModalComponent";
 import Header from "./components/Header";
-import Zoom from "./components/ui/Zoom";
 import Footer from "./components/Footer";
 import Board from "./components/Board";
-
-SplashScreen.preventAutoHideAsync();
+import { boxSize } from "./constants/values";
 
 const statusBarHeight =
   Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
@@ -28,13 +24,11 @@ const statusBarHeight =
 export default function App() {
   const visibility = NavigationBar.useVisibility();
 
-  const defaultColor = new color("ett_green", boxColors.ett_green);
+  const defaultColor = new Color("ett_green", boxColors.ett_green);
 
-  const [appIsReady, setAppIsReady] = useState(false);
   const [boxes, setBoxes] = useState();
   const [activeColor, setActiveColor] = useState(defaultColor);
   const [showEraseModal, setShowEraseModal] = useState(false);
-  const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
     if (visibility === "visible") {
@@ -48,33 +42,8 @@ export default function App() {
     }
   }, [visibility]);
 
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await initDatabase();
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-
-    prepare();
-  }, []);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
-  if (!appIsReady) {
-    return null;
-  }
-
   const handleSelectColor = (newColor) => {
     setActiveColor(newColor);
-    setIsZoomed(false);
   };
 
   const handleEraseAll = () => {
@@ -83,29 +52,17 @@ export default function App() {
 
   const eraseAllBoxes = () => {
     setBoxes((prevBoxes) =>
-      prevBoxes.map((prevBox) => ({ ...prevBox, color: new colorEmpty() }))
+      prevBoxes.map((prevBox) => ({ ...prevBox, color: new ColorEmpty() }))
     );
     setShowEraseModal(false);
   };
 
   return (
-    <SafeAreaView style={styles.outerContainer} onLayout={onLayoutRootView}>
-      <Header
-        activeColor={activeColor}
-        handleSelectColor={handleSelectColor}
-        isZoomed={isZoomed}
-      />
+    <SafeAreaView style={styles.outerContainer}>
+      <Header activeColor={activeColor} handleSelectColor={handleSelectColor} />
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Zoom isZoomed={isZoomed}>
-          <Board
-            boxes={boxes}
-            activeColor={activeColor}
-            setBoxes={setBoxes}
-            isZoomed={isZoomed}
-          />
-        </Zoom>
-
+        <Board boxes={boxes} setBoxes={setBoxes} activeColor={activeColor} />
         <ModalComponent
           isVisible={showEraseModal}
           title={"Erase Board?"}
@@ -124,9 +81,7 @@ export default function App() {
       </View>
       <Footer
         handleEraseAll={handleEraseAll}
-        isZoomed={isZoomed}
-        setIsZoomed={setIsZoomed}
-        activeColor={activeColor}
+        // handleSnapshot={handleSnapshot}
       />
     </SafeAreaView>
   );
@@ -141,5 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
 });

@@ -1,8 +1,9 @@
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
 import { boxColors } from "../constants/colors";
-import { color } from "../models/color";
+import { Color, ColorEmpty } from "../models/color";
 
 export default function ColorPicker({
   activeColor,
@@ -23,10 +24,18 @@ export default function ColorPicker({
                 { backgroundColor: hex },
                 pressed && styles.pressed,
               ]}
-              onPress={() => handleSelectColor(new color(name, hex))}
+              onPress={() => handleSelectColor(new Color(name, hex))}
             />
           </View>
         ))}
+        <View style={activeColor.name === "empty" && styles.active}>
+          <Entypo
+            name="eraser"
+            size={24}
+            color="white"
+            onPress={() => handleSelectColor(new ColorEmpty())}
+          />
+        </View>
       </View>
     </ScrollView>
   );
@@ -55,7 +64,7 @@ const styles = StyleSheet.create({
     height: 32,
     width: 32,
     borderColor: "white",
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderRadius: 24,
     padding: 2,
   },
