@@ -16,7 +16,6 @@ import ModalComponent from "./components/ui/ModalComponent";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Board from "./components/Board";
-import { boxSize } from "./constants/values";
 
 const statusBarHeight =
   Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
@@ -79,10 +78,7 @@ export default function App() {
           }}
         />
       </View>
-      <Footer
-        handleEraseAll={handleEraseAll}
-        // handleSnapshot={handleSnapshot}
-      />
+      <Footer handleEraseAll={handleEraseAll} />
     </SafeAreaView>
   );
 }

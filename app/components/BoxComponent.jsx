@@ -5,7 +5,6 @@ import SvgDefs from "./ui/SvgDefs";
 import { boxSize } from "../constants/values";
 
 export default function BoxComponent({ box }) {
-  // console.log("BoxComponent", box);
   return (
     <View style={styles.boxContainer}>
       {box.color.name === "empty" ? (
