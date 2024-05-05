@@ -6,7 +6,7 @@ import {
   View,
   StatusBar as rnStatusBar,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 
 import { boxColors, buttonColors } from "./constants/colors";
@@ -29,6 +29,8 @@ export default function App() {
   const [activeColor, setActiveColor] = useState(defaultColor);
   const [showEraseModal, setShowEraseModal] = useState(false);
 
+  const shareRef = useRef();
+
   useEffect(() => {
     if (visibility === "visible") {
       const interval = setTimeout(() => {
@@ -50,8 +52,9 @@ export default function App() {
   };
 
   const eraseAllBoxes = () => {
+    const emptyColor = new ColorEmpty();
     setBoxes((prevBoxes) =>
-      prevBoxes.map((prevBox) => ({ ...prevBox, color: new ColorEmpty() }))
+      prevBoxes.map((prevBox) => ({ ...prevBox, color: emptyColor }))
     );
     setShowEraseModal(false);
   };
@@ -61,24 +64,29 @@ export default function App() {
       <Header activeColor={activeColor} handleSelectColor={handleSelectColor} />
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Board boxes={boxes} setBoxes={setBoxes} activeColor={activeColor} />
+        <Board
+          boxes={boxes}
+          setBoxes={setBoxes}
+          activeColor={activeColor}
+          shareRef={shareRef}
+        />
         <ModalComponent
           isVisible={showEraseModal}
-          title={"Erase Board?"}
-          body={"This will permanently erase your board"}
+          title={"Create New Board?"}
+          body={"This will permanently erase your current board"}
           button1={{
             text: "Cancel",
             color: buttonColors.gray,
             onPress: () => setShowEraseModal(false),
           }}
           button2={{
-            text: "ERASE",
+            text: "NEW BOARD",
             color: buttonColors.red,
             onPress: eraseAllBoxes,
           }}
         />
       </View>
-      <Footer handleEraseAll={handleEraseAll} />
+      <Footer handleEraseAll={handleEraseAll} shareRef={shareRef} />
     </SafeAreaView>
   );
 }

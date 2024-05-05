@@ -2,8 +2,9 @@ import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 
 import MaterialIconsComponent from "./ui/MaterialIconsComponent";
+import ShareCapture from "./ShareCapture";
 
-export default function Footer({ handleEraseAll }) {
+export default function Footer({ handleEraseAll, shareRef }) {
   const containerStyle = {
     borderWidth: 2,
     justifyContent: "center",
@@ -17,13 +18,9 @@ export default function Footer({ handleEraseAll }) {
       <MaterialIconsComponent
         onPress={handleEraseAll}
         containerStyle={containerStyle}
-        icon={{ name: "delete-forever", size: 28, color: "white" }}
+        icon={{ name: "note-add", size: 28, color: "white" }}
       />
-      <MaterialIconsComponent
-        // onPress={handleEraseAll}
-        containerStyle={containerStyle}
-        icon={{ name: "camera-alt", size: 28, color: "white" }}
-      />
+      <ShareCapture shareRef={shareRef} />
     </View>
   );
 }
@@ -31,6 +28,7 @@ export default function Footer({ handleEraseAll }) {
 Footer.propTypes = {
   handleEraseAll: PropTypes.func,
   activeColor: PropTypes.object,
+  shareRef: PropTypes.object,
 };
 
 const styles = StyleSheet.create({

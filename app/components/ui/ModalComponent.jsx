@@ -12,18 +12,20 @@ export default function ModalComponent({
   return (
     <Modal visible={isVisible} transparent={true} animationType="slide">
       <View style={styles.container}>
-        <View style={styles.innerContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.textTitle}>{title}</Text>
-            <Text style={styles.textBody}>{body}</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <ButtonComponent onPress={button1.onPress} color={button1.color}>
-              {button1.text}
-            </ButtonComponent>
-            <ButtonComponent onPress={button2.onPress} color={button2.color}>
-              {button2.text}
-            </ButtonComponent>
+        <View style={styles.modalContainer}>
+          <View style={styles.innerContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.textTitle}>{title}</Text>
+              <Text style={styles.textBody}>{body}</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <ButtonComponent onPress={button1.onPress} color={button1.color}>
+                {button1.text}
+              </ButtonComponent>
+              <ButtonComponent onPress={button2.onPress} color={button2.color}>
+                {button2.text}
+              </ButtonComponent>
+            </View>
           </View>
         </View>
       </View>
@@ -46,20 +48,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  innerContainer: {
+  modalContainer: {
     alignItems: "center",
     backgroundColor: "white",
-    marginVertical: 60,
-    width: "85%",
+    width: "90%",
+    maxWidth: 400,
     borderWidth: 1,
     borderColor: "#25292e",
     borderRadius: 12,
     elevation: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+  },
+  innerContainer: {
+    width: "85%",
+    maxWidth: 360,
+    marginVertical: 20,
   },
   textContainer: {
     marginBottom: 20,
+    marginHorizontal: 2,
   },
   textTitle: {
     fontSize: 20,
