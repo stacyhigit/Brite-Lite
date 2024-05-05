@@ -1,16 +1,17 @@
 import { FlatList, useWindowDimensions } from "react-native";
-import { useLayoutEffect } from "react";
+import { memo, useLayoutEffect } from "react";
 import PropTypes from "prop-types";
 
 import BoxComponent from "./BoxComponent";
 import PanAndZoom from "./ui/PanAndZoom";
 import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
+import ViewShot from "react-native-view-shot";
 
-export default function Board({ boxes, setBoxes, activeColor }) {
+function Board({ boxes, setBoxes, activeColor, shareRef }) {
   const { width, height } = useWindowDimensions();
-  const columnCount = Math.floor(width / boxSize.width);
-  const rowCount = Math.floor(height / boxSize.height);
+  const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
+  const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
   const boxCount = columnCount * rowCount;
 
   useLayoutEffect(() => {
@@ -23,8 +24,8 @@ export default function Board({ boxes, setBoxes, activeColor }) {
 
   const setColor = (id) => {
     setBoxes((prevBoxes) =>
-      prevBoxes.map((prevbox) =>
-        prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
+      prevBoxes.map((prevbox, i) =>
+        i === id ? { ...prevbox, color: activeColor } : prevbox
       )
     );
   };
@@ -35,15 +36,17 @@ export default function Board({ boxes, setBoxes, activeColor }) {
       rowCount={rowCount}
       setColor={setColor}
     >
-      <FlatList
-        data={boxes}
-        keyExtractor={(item) => item.id}
-        scrollEnabled={false}
-        numColumns={columnCount}
-        renderItem={({ item }) => {
-          return <BoxComponent box={item} />;
-        }}
-      />
+      <ViewShot ref={shareRef}>
+        <FlatList
+          data={boxes}
+          keyExtractor={(item) => item.id}
+          scrollEnabled={false}
+          numColumns={columnCount}
+          renderItem={({ item }) => {
+            return <BoxComponent box={item} />;
+          }}
+        />
+      </ViewShot>
     </PanAndZoom>
   );
 }
@@ -52,4 +55,7 @@ Board.propTypes = {
   boxes: PropTypes.array,
   setBoxes: PropTypes.func,
   activeColor: PropTypes.object,
+  shareRef: PropTypes.object,
 };
+
+export default memo(Board);
