@@ -1,5 +1,5 @@
 import { FlatList, useWindowDimensions } from "react-native";
-import { memo, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import PropTypes from "prop-types";
 
 import BoxComponent from "./BoxComponent";
@@ -8,7 +8,7 @@ import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
 
-function Board({ boxes, setBoxes, activeColor, shareRef }) {
+export default function Board({ boxes, setBoxes, activeColor, shareRef }) {
   const { width, height } = useWindowDimensions();
   const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
   const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
@@ -24,8 +24,8 @@ function Board({ boxes, setBoxes, activeColor, shareRef }) {
 
   const setColor = (id) => {
     setBoxes((prevBoxes) =>
-      prevBoxes.map((prevbox, i) =>
-        i === id ? { ...prevbox, color: activeColor } : prevbox
+      prevBoxes.map((prevbox) =>
+        prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
       )
     );
   };
@@ -57,5 +57,3 @@ Board.propTypes = {
   activeColor: PropTypes.object,
   shareRef: PropTypes.object,
 };
-
-export default memo(Board);

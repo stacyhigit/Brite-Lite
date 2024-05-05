@@ -54,7 +54,7 @@ export default function App() {
   const eraseAllBoxes = () => {
     const emptyColor = new ColorEmpty();
     setBoxes((prevBoxes) =>
-      prevBoxes.map((row) => row.map((box) => ({ ...box, color: emptyColor })))
+      prevBoxes.map((prevBox) => ({ ...prevBox, color: emptyColor }))
     );
     setShowEraseModal(false);
   };
