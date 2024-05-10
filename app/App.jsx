@@ -6,10 +6,12 @@ import {
   View,
   StatusBar as rnStatusBar,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
+import * as SplashScreen from "expo-splash-screen";
 
-import { boxColors, buttonColors } from "./constants/colors";
+import { getAllColors, initDatabase } from "./util/database";
+import { boxColors, buttonColors, defaultColor } from "./constants/colors";
 import { Color, ColorEmpty } from "./models/color";
 
 import ModalComponent from "./components/ui/ModalComponent";
@@ -17,16 +19,18 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Board from "./components/Board";
 
+SplashScreen.preventAutoHideAsync();
+
 const statusBarHeight =
   Platform.OS == "android" ? rnStatusBar.currentHeight : 0;
 
 export default function App() {
   const visibility = NavigationBar.useVisibility();
 
-  const defaultColor = new Color("ett_green", boxColors.ett_green);
-
+  const [appIsReady, setAppIsReady] = useState(false);
   const [boxes, setBoxes] = useState();
   const [activeColor, setActiveColor] = useState(defaultColor);
+  const [customColors, setCustomColors] = useState([]);
   const [showEraseModal, setShowEraseModal] = useState(false);
 
   const shareRef = useRef();
@@ -43,9 +47,29 @@ export default function App() {
     }
   }, [visibility]);
 
-  const handleSelectColor = (newColor) => {
-    setActiveColor(newColor);
-  };
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await initDatabase();
+        const allColors = await getAllColors();
+        setCustomColors(allColors);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+  if (!appIsReady) {
+    return null;
+  }
 
   const handleEraseAll = () => {
     setShowEraseModal(true);
@@ -60,8 +84,13 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.outerContainer}>
-      <Header activeColor={activeColor} handleSelectColor={handleSelectColor} />
+    <SafeAreaView style={styles.outerContainer} onLayout={onLayoutRootView}>
+      <Header
+        activeColor={activeColor}
+        setActiveColor={setActiveColor}
+        customColors={customColors}
+        setCustomColors={setCustomColors}
+      />
       <StatusBar style="light" />
       <View style={styles.container}>
         <Board

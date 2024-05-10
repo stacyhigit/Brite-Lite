@@ -1,6 +1,6 @@
 export class Color {
-  constructor(name, hex) {
-    this.name = name;
+  constructor(id, hex) {
+    this.id = id;
     this.hex = hex;
   }
 }

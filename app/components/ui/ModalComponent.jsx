@@ -22,9 +22,14 @@ export default function ModalComponent({
               <ButtonComponent onPress={button1.onPress} color={button1.color}>
                 {button1.text}
               </ButtonComponent>
-              <ButtonComponent onPress={button2.onPress} color={button2.color}>
-                {button2.text}
-              </ButtonComponent>
+              {button2 && (
+                <ButtonComponent
+                  onPress={button2.onPress}
+                  color={button2.color}
+                >
+                  {button2.text}
+                </ButtonComponent>
+              )}
             </View>
           </View>
         </View>

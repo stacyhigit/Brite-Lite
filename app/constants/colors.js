@@ -1,3 +1,5 @@
+import { Color } from "../models/color";
+
 export const boxColors = {
   red: "#ff0000",
   ett_orange: "#ff9900",
@@ -7,6 +9,12 @@ export const boxColors = {
   dark_blue: "#4076fa",
   ett_purple: "#ff00ff",
 };
+
+export const defaultColor = new Color("ett_green", boxColors.ett_green);
+
+export const basicSwatches = Object.entries(boxColors).map(
+  ([id, hex]) => new Color(id, hex)
+);
 
 export const buttonColors = {
   blue: "#367BF5",
