@@ -8,8 +8,6 @@ import PanAndZoom from "./ui/PanAndZoom";
 import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
-
-import { boxes as fishBoxes } from "../../assets/templates/fish";
 export default function Board({ boxes, setBoxes, activeColor, shareRef }) {
   const { width, height } = useWindowDimensions();
   const columnCount = Math.min(Math.floor(width / boxSize.width), 33);

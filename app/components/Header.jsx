@@ -60,7 +60,6 @@ export default function Header({
 Header.propTypes = {
   activeColor: PropTypes.object,
   setActiveColor: PropTypes.func,
-  handleSelectColor: PropTypes.func,
   handleErase: PropTypes.func,
   isZoomed: PropTypes.bool,
   customColors: PropTypes.array,
