@@ -1,21 +1,56 @@
-import { StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+
 import PropTypes from "prop-types";
 
-import ColorPicker from "./ColorPicker";
-import MaterialIconsComponent from "./ui/MaterialIconsComponent";
+import { useState } from "react";
+import { ColorEmpty } from "../models/color";
+import ModalColorPicker from "./ui/ModalColorPicker";
+import { circledStyle, pressedStyle } from "../constants/styles";
+import SwatchesCustom from "./ui/SwatchesCustom";
+import { basicSwatches } from "../constants/colors";
+export default function Header({
+  activeColor,
+  setActiveColor,
+  customColors,
+  setCustomColors,
+}) {
+  const [showModal, setShowModal] = useState(false);
 
-export default function Header({ activeColor, handleSelectColor }) {
+  const allColors = [...customColors, ...basicSwatches];
+
   return (
     <View style={styles.headerContainer}>
-      <MaterialIconsComponent
-        onPress={undefined}
-        containerStyle={undefined}
-        icon={{ name: "color-lens", size: 28, color: activeColor.hex }}
-      />
       <View style={styles.colorPickerContainer}>
-        <ColorPicker
+        <Pressable
+          style={({ pressed }) => pressed && pressedStyle}
+          onPress={() => setShowModal(true)}
+        >
+          <Image
+            source={require("../../assets/color_circle.png")}
+            style={styles.colorPickerImg}
+          />
+        </Pressable>
+        <SwatchesCustom
+          colors={allColors}
           activeColor={activeColor}
-          handleSelectColor={handleSelectColor}
+          setActiveColor={setActiveColor}
+        />
+        <View style={activeColor.id === "empty" && circledStyle}>
+          <Entypo
+            name="eraser"
+            size={24}
+            color="white"
+            onPress={() => setActiveColor(new ColorEmpty())}
+          />
+        </View>
+        <ModalColorPicker
+          showModal={showModal}
+          setShowModal={setShowModal}
+          customColors={customColors}
+          setCustomColors={setCustomColors}
+          activeColor={activeColor}
+          setActiveColor={setActiveColor}
         />
       </View>
     </View>
@@ -24,9 +59,11 @@ export default function Header({ activeColor, handleSelectColor }) {
 
 Header.propTypes = {
   activeColor: PropTypes.object,
-  handleSelectColor: PropTypes.func,
+  setActiveColor: PropTypes.func,
   handleErase: PropTypes.func,
   isZoomed: PropTypes.bool,
+  customColors: PropTypes.array,
+  setCustomColors: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
@@ -41,6 +78,13 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   colorPickerContainer: {
-    maxWidth: "80%",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    maxWidth: "95%",
+  },
+  colorPickerImg: {
+    height: 28,
+    width: 28,
   },
 });

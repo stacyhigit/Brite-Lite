@@ -6,17 +6,17 @@ import { boxSize } from "../constants/values";
 
 export default function BoxComponent({ box }) {
   return (
-    <View style={styles.boxContainer}>
-      {box.color.name === "empty" ? (
+    <View style={styles.outerBox}>
+      {box.color.id === "empty" ? (
         <View style={styles.innerBoxEmpty} />
       ) : (
         <Svg height={boxSize.height} width={boxSize.width}>
-          <SvgDefs />
+          <SvgDefs boxColor={box.color} />
           <Circle
             cx={boxSize.height / 2}
             cy={boxSize.height / 2}
             r={boxSize.height / 2 - 1}
-            fill={`url(#${box.color.name})`}
+            fill={`url(#id${box.color.id}${box.color.hex})`}
           />
         </Svg>
       )}
@@ -29,7 +29,7 @@ BoxComponent.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  boxContainer: {
+  outerBox: {
     alignItems: "center",
     justifyContent: "center",
     height: boxSize.height,
