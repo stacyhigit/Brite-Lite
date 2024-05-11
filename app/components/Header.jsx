@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     maxWidth: "95%",
   },
   colorPickerImg: {
-    height: 28,
-    width: 28,
+    height: 30,
+    width: 30,
   },
 });

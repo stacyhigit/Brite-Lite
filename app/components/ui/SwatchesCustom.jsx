@@ -13,13 +13,18 @@ export default function SwatchesCustom({
 }) {
   return (
     <ScrollView horizontal={true} style={scrollView}>
-      <View style={[cpStyles.swatchesContainer, styles.swatches, style]}>
+      <View
+        style={[cpStyles.swatchesContainer, styles.swatchesContainer, style]}
+      >
         {colors.length > 0 ? (
           colors.map((color) => {
             return (
               <View
                 key={color.hex + color.id}
-                style={color.id == activeColor.id && circledStyle}
+                style={[
+                  styles.circleContainer,
+                  color.id == activeColor.id && circledStyle,
+                ]}
               >
                 <Pressable
                   onPress={() => setActiveColor(color)}
@@ -34,9 +39,11 @@ export default function SwatchesCustom({
             );
           })
         ) : (
-          <View
-            style={[cpStyles.swatch, swatchStyle, styles.placeHolder]}
-          ></View>
+          <View style={styles.circleContainer}>
+            <View
+              style={[styles.swatch, swatchStyle, styles.placeHolder]}
+            ></View>
+          </View>
         )}
       </View>
     </ScrollView>
@@ -61,7 +68,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: 5,
   },
-  swatches: {
+  swatchesContainer: {
     alignItems: "center",
+  },
+  circleContainer: {
+    justifyContent: "center",
+    height: 38,
+    width: 38,
   },
 });
