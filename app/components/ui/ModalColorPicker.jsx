@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
   Modal,
@@ -22,7 +22,7 @@ import PropTypes from "prop-types";
 import MaterialIconsComponent from "./MaterialIconsComponent";
 import SwatchesCustom from "./SwatchesCustom";
 import { basicSwatches, defaultColor } from "../../constants/colors";
-import { pressedStyle, scrollView } from "../../constants/styles";
+import { pressedStyle, scrollView, swatch } from "../../constants/styles";
 import { deleteColor, insertColor } from "../../util/database";
 import { Color } from "../../models/color";
 
@@ -35,7 +35,10 @@ export default function ModalColorPicker({
   setActiveColor,
 }) {
   const pickerRef = useRef(null);
+
   const selectedColor = useSharedValue(activeColor.hex);
+
+  const [showDelete, setShowDelete] = useState(false);
 
   const backgroundColorStyle = useAnimatedStyle(() => ({
     backgroundColor: selectedColor.value,
@@ -62,14 +65,19 @@ export default function ModalColorPicker({
     }
   };
 
-  const handleDeleteColor = () => {
+  const handleSetShowDelete = () => {
     if (typeof activeColor.id === "number") {
-      setCustomColors((prevColors) =>
-        prevColors.filter((prevcolor) => activeColor.id !== prevcolor.id)
-      );
-      deleteColor(activeColor.id);
-      setActiveColor(defaultColor);
+      setShowDelete((prev) => !prev);
     }
+  };
+
+  const handleDeleteColor = () => {
+    setCustomColors((prevColors) =>
+      prevColors.filter((prevcolor) => activeColor.id !== prevcolor.id)
+    );
+    deleteColor(activeColor.id);
+    setActiveColor(defaultColor);
+    setShowDelete(false);
   };
 
   return (
@@ -80,8 +88,8 @@ export default function ModalColorPicker({
     >
       <Animated.View style={[styles.container, backgroundColorStyle]}>
         <KeyboardAvoidingView behavior="position">
-          <ScrollView>
-            <View style={styles.pickerContainer}>
+          <ScrollView contentOffset={{ x: 0, y: 500 }}>
+            <View style={[styles.pickerContainer]}>
               <ColorPicker
                 ref={pickerRef}
                 value={selectedColor.value}
@@ -101,7 +109,6 @@ export default function ModalColorPicker({
                   thumbShape="ring"
                   thumbSize={30}
                 />
-
                 <BrightnessSlider
                   style={styles.sliderStyle}
                   thumbColor="#fff"
@@ -131,16 +138,15 @@ export default function ModalColorPicker({
                       setActiveColor={setActiveColor}
                     />
                     <MaterialIconsComponent
-                      onPress={handleDeleteColor}
+                      onPress={handleSetShowDelete}
                       containerStyle={styles.removeIcon}
-                      icon={{
-                        name: "highlight-remove",
-                        size: 24,
-                        color: "white",
-                      }}
+                      icon={
+                        typeof activeColor.id === "number"
+                          ? { name: "edit", size: 24, color: "white" }
+                          : { name: "edit", size: 24, color: "#707070" }
+                      }
                     />
                   </View>
-
                   <View style={styles.buttonContainer}>
                     <Pressable
                       style={({ pressed }) => [
@@ -164,6 +170,46 @@ export default function ModalColorPicker({
                   </View>
                 </View>
               </ColorPicker>
+              {showDelete && (
+                <View style={[styles.pressable, styles.deleteContainer]}>
+                  <View style={styles.deleteInnerContainer}>
+                    <Text style={[styles.text, styles.deleteText]}>
+                      Delete Color
+                    </Text>
+                    <View
+                      style={[
+                        { backgroundColor: activeColor.hex },
+                        styles.deleteColor,
+                      ]}
+                    ></View>
+                  </View>
+                  <View
+                    style={[
+                      styles.deleteInnerContainer,
+                      styles.deleteButtonContainer,
+                    ]}
+                  >
+                    <Pressable
+                      style={({ pressed }) => [
+                        styles.pressable,
+                        pressed && pressedStyle,
+                      ]}
+                      onPress={() => setShowDelete(false)}
+                    >
+                      <Text style={styles.text}>Cancel</Text>
+                    </Pressable>
+                    <Pressable
+                      style={({ pressed }) => [
+                        styles.pressable,
+                        pressed && pressedStyle,
+                      ]}
+                      onPress={handleDeleteColor}
+                    >
+                      <Text style={styles.text}>Delete</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              )}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -260,6 +306,9 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
   },
+  deleteText: {
+    fontSize: 16,
+  },
   textHeader: {
     marginBottom: 6,
   },
@@ -273,5 +322,32 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  deleteContainer: {
+    position: "absolute",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    top: "50%",
+    gap: 6,
+    paddingHorizontal: 16,
+    paddingTop: 22,
+    borderRadius: 24,
+    width: "auto",
+  },
+  deleteInnerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+  },
+  deleteButtonContainer: {
+    marginTop: 12,
+  },
+  deleteColor: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginHorizontal: 5,
   },
 });
