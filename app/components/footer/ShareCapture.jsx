@@ -1,8 +1,8 @@
 import { captureRef } from "react-native-view-shot";
 import Share from "react-native-share";
 
-import MaterialIconsComponent from "./ui/MaterialIconsComponent";
-import { playStoreUrl } from "../constants/values";
+import MaterialIconsComponent from "../ui/MaterialIconsComponent";
+import { playStoreUrl } from "../../constants/values";
 import PropTypes from "prop-types";
 
 export default function ShareCapture({ shareRef }) {

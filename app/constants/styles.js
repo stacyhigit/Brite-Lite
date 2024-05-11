@@ -14,3 +14,10 @@ export const circledStyle = {
 export const scrollView = {
   flexGrow: 0,
 };
+export const containerFooter = {
+  borderWidth: 2,
+  justifyContent: "center",
+  alignItems: "center",
+  paddingTop: 3,
+  width: 32,
+};
