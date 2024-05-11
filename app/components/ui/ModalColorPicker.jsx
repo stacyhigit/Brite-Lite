@@ -22,9 +22,10 @@ import PropTypes from "prop-types";
 import MaterialIconsComponent from "./MaterialIconsComponent";
 import SwatchesCustom from "./SwatchesCustom";
 import { basicSwatches, defaultColor } from "../../constants/colors";
-import { pressedStyle, scrollView, swatch } from "../../constants/styles";
+import { pressedStyle, scrollView } from "../../constants/styles";
 import { deleteColor, insertColor } from "../../util/database";
 import { Color } from "../../models/color";
+import DeleteColor from "./DeleteColor";
 
 export default function ModalColorPicker({
   showModal,
@@ -47,6 +48,9 @@ export default function ModalColorPicker({
   useEffect(() => {
     selectedColor.value = activeColor.hex;
     pickerRef.current && pickerRef.current.setColor(activeColor.hex);
+    if (typeof activeColor.id !== "number") {
+      setShowDelete(false);
+    }
   }, [activeColor]);
 
   const onColorSelect = (color) => {
@@ -59,7 +63,7 @@ export default function ModalColorPicker({
       const res = await insertColor(selectedColor.value);
       const newColor = new Color(res.lastInsertRowId, selectedColor.value);
       setActiveColor(newColor);
-      setCustomColors((prevColors) => [newColor, ...prevColors]);
+      setCustomColors((prevColors) => [...prevColors, newColor]);
     } catch (error) {
       console.log("Error insertColor:", error);
     }
@@ -72,11 +76,18 @@ export default function ModalColorPicker({
   };
 
   const handleDeleteColor = () => {
-    setCustomColors((prevColors) =>
-      prevColors.filter((prevcolor) => activeColor.id !== prevcolor.id)
-    );
+    setCustomColors((prevColors) => {
+      const nextColors = prevColors.filter(
+        (prevcolor) => activeColor.id !== prevcolor.id
+      );
+      if (nextColors.length === 0) {
+        setActiveColor(defaultColor);
+      } else {
+        setActiveColor(nextColors[0]);
+      }
+      return nextColors;
+    });
     deleteColor(activeColor.id);
-    setActiveColor(defaultColor);
     setShowDelete(false);
   };
 
@@ -89,7 +100,7 @@ export default function ModalColorPicker({
       <Animated.View style={[styles.container, backgroundColorStyle]}>
         <KeyboardAvoidingView behavior="position">
           <ScrollView contentOffset={{ x: 0, y: 500 }}>
-            <View style={[styles.pickerContainer]}>
+            <View style={styles.pickerContainer}>
               <ColorPicker
                 ref={pickerRef}
                 value={selectedColor.value}
@@ -170,46 +181,12 @@ export default function ModalColorPicker({
                   </View>
                 </View>
               </ColorPicker>
-              {showDelete && (
-                <View style={[styles.pressable, styles.deleteContainer]}>
-                  <View style={styles.deleteInnerContainer}>
-                    <Text style={[styles.text, styles.deleteText]}>
-                      Delete Color
-                    </Text>
-                    <View
-                      style={[
-                        { backgroundColor: activeColor.hex },
-                        styles.deleteColor,
-                      ]}
-                    ></View>
-                  </View>
-                  <View
-                    style={[
-                      styles.deleteInnerContainer,
-                      styles.deleteButtonContainer,
-                    ]}
-                  >
-                    <Pressable
-                      style={({ pressed }) => [
-                        styles.pressable,
-                        pressed && pressedStyle,
-                      ]}
-                      onPress={() => setShowDelete(false)}
-                    >
-                      <Text style={styles.text}>Cancel</Text>
-                    </Pressable>
-                    <Pressable
-                      style={({ pressed }) => [
-                        styles.pressable,
-                        pressed && pressedStyle,
-                      ]}
-                      onPress={handleDeleteColor}
-                    >
-                      <Text style={styles.text}>Delete</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              )}
+              <DeleteColor
+                activeColor={activeColor}
+                showDelete={showDelete}
+                setShowDelete={setShowDelete}
+                handleDeleteColor={handleDeleteColor}
+              />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -306,9 +283,6 @@ const styles = StyleSheet.create({
   text: {
     color: "#fff",
   },
-  deleteText: {
-    fontSize: 16,
-  },
   textHeader: {
     marginBottom: 6,
   },
@@ -322,32 +296,5 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  deleteContainer: {
-    position: "absolute",
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
-    top: "50%",
-    gap: 6,
-    paddingHorizontal: 16,
-    paddingTop: 22,
-    borderRadius: 24,
-    width: "auto",
-  },
-  deleteInnerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-  },
-  deleteButtonContainer: {
-    marginTop: 12,
-  },
-  deleteColor: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginHorizontal: 5,
   },
 });
