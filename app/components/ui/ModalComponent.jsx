@@ -14,7 +14,7 @@ export default function ModalComponent({
   return (
     <Modal visible={isVisible} transparent={true} animationType="slide">
       <Pressable style={styles.container} onPress={closeModal}>
-        <View style={styles.modalContainer}>
+        <Pressable style={styles.modalContainer} onPress={undefined}>
           <View style={styles.innerContainer}>
             <View style={styles.textContainer}>
               <Text style={styles.textTitle}>{title}</Text>
@@ -22,9 +22,14 @@ export default function ModalComponent({
               {children}
             </View>
             <View style={styles.buttonContainer}>
-              <ButtonComponent onPress={button1.onPress} color={button1.color}>
-                {button1.text}
-              </ButtonComponent>
+              {button1 && (
+                <ButtonComponent
+                  onPress={button1.onPress}
+                  color={button1.color}
+                >
+                  {button1.text}
+                </ButtonComponent>
+              )}
               {button2 && (
                 <ButtonComponent
                   onPress={button2.onPress}
@@ -35,7 +40,7 @@ export default function ModalComponent({
               )}
             </View>
           </View>
-        </View>
+        </Pressable>
       </Pressable>
     </Modal>
   );
