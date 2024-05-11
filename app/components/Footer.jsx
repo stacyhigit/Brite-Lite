@@ -2,32 +2,22 @@ import { StyleSheet, View } from "react-native";
 import PropTypes from "prop-types";
 
 import MaterialIconsComponent from "./ui/MaterialIconsComponent";
-import ShareCapture from "./ShareCapture";
+import ShareCapture from "./footer/ShareCapture";
+import Save from "./footer/Save";
+import { containerFooter } from "../constants/styles";
+import EraseBoard from "./footer/EraseBoard";
 
-export default function Footer({ handleEraseAll, shareRef }) {
-  const containerStyle = {
-    borderWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 3,
-    width: 32,
-  };
-
+export default function Footer({ eraseAllBoxes, shareRef }) {
   return (
     <View style={styles.footerContainer}>
-      <MaterialIconsComponent
-        onPress={handleEraseAll}
-        containerStyle={containerStyle}
-        icon={{ name: "note-add", size: 28, color: "white" }}
-      />
+      <EraseBoard eraseAllBoxes={eraseAllBoxes} />
       <ShareCapture shareRef={shareRef} />
     </View>
   );
 }
 
 Footer.propTypes = {
-  handleEraseAll: PropTypes.func,
-  activeColor: PropTypes.object,
+  eraseAllBoxes: PropTypes.func,
   shareRef: PropTypes.object,
 };
 

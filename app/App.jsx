@@ -31,7 +31,6 @@ export default function App() {
   const [boxes, setBoxes] = useState();
   const [activeColor, setActiveColor] = useState(defaultColor);
   const [customColors, setCustomColors] = useState([]);
-  const [showEraseModal, setShowEraseModal] = useState(false);
 
   const shareRef = useRef();
 
@@ -71,16 +70,11 @@ export default function App() {
     return null;
   }
 
-  const handleEraseAll = () => {
-    setShowEraseModal(true);
-  };
-
   const eraseAllBoxes = () => {
     const emptyColor = new ColorEmpty();
     setBoxes((prevBoxes) =>
       prevBoxes.map((prevBox) => ({ ...prevBox, color: emptyColor }))
     );
-    setShowEraseModal(false);
   };
 
   return (
@@ -99,23 +93,8 @@ export default function App() {
           activeColor={activeColor}
           shareRef={shareRef}
         />
-        <ModalComponent
-          isVisible={showEraseModal}
-          title={"Create New Board?"}
-          body={"This will permanently erase your current board"}
-          button1={{
-            text: "Cancel",
-            color: buttonColors.gray,
-            onPress: () => setShowEraseModal(false),
-          }}
-          button2={{
-            text: "NEW BOARD",
-            color: buttonColors.red,
-            onPress: eraseAllBoxes,
-          }}
-        />
       </View>
-      <Footer handleEraseAll={handleEraseAll} shareRef={shareRef} />
+      <Footer eraseAllBoxes={eraseAllBoxes} shareRef={shareRef} />
     </SafeAreaView>
   );
 }
