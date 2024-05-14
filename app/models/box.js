@@ -1,8 +1,8 @@
 import { Color, ColorEmpty } from "./color";
 
 export class Box {
-  constructor(id, color) {
-    this.id = id;
+  constructor(index, color) {
+    this.index = index;
     this.color = color;
   }
   setColor(name, hex) {
@@ -11,7 +11,7 @@ export class Box {
 }
 
 export class BoxEmpty extends Box {
-  constructor(id) {
-    super(id, new ColorEmpty());
+  constructor(index) {
+    super(index, new ColorEmpty());
   }
 }

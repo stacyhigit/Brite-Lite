@@ -1,7 +1,9 @@
-import ModalComponent from "../ui/ModalComponent";
-import { buttonColors } from "../../constants/colors";
 import { useState } from "react";
+import PropTypes from "prop-types";
+
+import ModalComponent from "../ui/ModalComponent";
 import MaterialIconsComponent from "../ui/MaterialIconsComponent";
+import { buttonColors } from "../../constants/colors";
 import { containerFooter } from "../../constants/styles";
 
 export default function EraseBoard({ eraseAllBoxes }) {
@@ -38,3 +40,7 @@ export default function EraseBoard({ eraseAllBoxes }) {
     </>
   );
 }
+
+EraseBoard.propTypes = {
+  eraseAllBoxes: PropTypes.func,
+};

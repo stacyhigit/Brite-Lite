@@ -6,9 +6,9 @@
     "description": "Create a glowing picture with brightly colored lights",
     "backgroundColor": "#000000",
     "orientation": "portrait",
-		"androidStatusBar": {
-			"hidden": true
-		},
+    "androidStatusBar": {
+      "hidden": true
+    },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -24,22 +24,23 @@
     },
     "android": {
       "package": "com.eatthetoad.britelite",
-			"versionCode": 3,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
-      }
+      },
+			"blockedPermissions": ["android.permission.READ_MEDIA_AUDIO"]
     },
-		"plugins": [
-			[
-				"expo-navigation-bar",
-				{
-					"position": "relative",
-					"visibility": "hidden",
-					"behavior": "inset-swipe",
-					"backgroundColor": "#00000095"
-				}
-			]
-    ]
+    "plugins": [
+      [
+        "expo-navigation-bar",
+        {
+          "position": "absolute",
+          "visibility": "hidden",
+          "behavior": "inset-swipe",
+          "backgroundColor": "#00000095"
+        }
+      ]
+		]
   }
 }

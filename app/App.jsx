@@ -11,13 +11,13 @@ import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
 
 import { getAllColors, initDatabase } from "./util/database";
-import { boxColors, buttonColors, defaultColor } from "./constants/colors";
-import { Color, ColorEmpty } from "./models/color";
+import { ColorEmpty } from "./models/color";
+import { Board } from "./models/board";
+import { defaultColor } from "./constants/colors";
 
-import ModalComponent from "./components/ui/ModalComponent";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Board from "./components/Board";
+import BoardComponent from "./components/BoardComponent";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,6 +29,7 @@ export default function App() {
 
   const [appIsReady, setAppIsReady] = useState(false);
   const [boxes, setBoxes] = useState();
+  const [board, setBoard] = useState(new Board(null, 0, 0));
   const [activeColor, setActiveColor] = useState(defaultColor);
   const [customColors, setCustomColors] = useState([]);
 
@@ -87,14 +88,21 @@ export default function App() {
       />
       <StatusBar style="light" />
       <View style={styles.container}>
-        <Board
+        <BoardComponent
           boxes={boxes}
+          setBoard={setBoard}
           setBoxes={setBoxes}
           activeColor={activeColor}
           shareRef={shareRef}
         />
       </View>
-      <Footer eraseAllBoxes={eraseAllBoxes} shareRef={shareRef} />
+      <Footer
+        boxes={boxes}
+        board={board}
+        setBoard={setBoard}
+        eraseAllBoxes={eraseAllBoxes}
+        shareRef={shareRef}
+      />
     </SafeAreaView>
   );
 }
