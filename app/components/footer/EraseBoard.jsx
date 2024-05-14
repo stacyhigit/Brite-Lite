@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 import ModalComponent from "../ui/ModalComponent";
-import MaterialIconsComponent from "../ui/MaterialIconsComponent";
+import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
 import { containerFooter } from "../../constants/styles";
 
@@ -16,14 +16,14 @@ export default function EraseBoard({ eraseAllBoxes }) {
 
   return (
     <>
-      <MaterialIconsComponent
+      <MaterialCommunityIconsComponent
         onPress={() => setShowModal(true)}
         containerStyle={containerFooter}
-        icon={{ name: "note-add", size: 28, color: "white" }}
+        icon={{ name: "delete-forever", size: 28, color: "white" }}
       />
       <ModalComponent
         isVisible={showModal}
-        title={"Create New Board?"}
+        title={"Erase Board?"}
         body={"This will permanently erase your current board"}
         closeModal={() => setShowModal(false)}
         button1={{
@@ -32,7 +32,7 @@ export default function EraseBoard({ eraseAllBoxes }) {
           onPress: () => setShowModal(false),
         }}
         button2={{
-          text: "NEW BOARD",
+          text: "ERASE",
           color: buttonColors.red,
           onPress: handleEraseAllBoxes,
         }}

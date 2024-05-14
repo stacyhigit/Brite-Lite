@@ -19,13 +19,14 @@ import ColorPicker, {
 } from "reanimated-color-picker";
 import PropTypes from "prop-types";
 
-import MaterialIconsComponent from "./MaterialIconsComponent";
-import SwatchesCustom from "./SwatchesCustom";
 import { basicSwatches, defaultColor } from "../../constants/colors";
 import { pressedStyle, scrollView } from "../../constants/styles";
 import { deleteColor, insertColor } from "../../util/database";
 import { Color } from "../../models/color";
+
+import SwatchesCustom from "./SwatchesCustom";
 import DeleteColor from "./DeleteColor";
+import MaterialCommunityIconsComponent from "./MaterialCommunityIconsComponent";
 
 export default function ModalColorPicker({
   showModal,
@@ -148,13 +149,13 @@ export default function ModalColorPicker({
                       activeColor={activeColor}
                       setActiveColor={setActiveColor}
                     />
-                    <MaterialIconsComponent
+                    <MaterialCommunityIconsComponent
                       onPress={handleSetShowDelete}
                       containerStyle={styles.removeIcon}
                       icon={
                         typeof activeColor.id === "number"
-                          ? { name: "edit", size: 24, color: "white" }
-                          : { name: "edit", size: 24, color: "#707070" }
+                          ? { name: "pencil", size: 24, color: "white" }
+                          : { name: "pencil", size: 24, color: "#707070" }
                       }
                     />
                   </View>

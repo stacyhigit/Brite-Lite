@@ -13,9 +13,9 @@ import * as Burnt from "burnt";
 import PropTypes from "prop-types";
 
 import ModalComponent from "../ui/ModalComponent";
-import MaterialIconsComponent from "../ui/MaterialIconsComponent";
 import { containerFooter } from "../../constants/styles";
 import { insertBoard, updateBoard } from "../../util/database";
+import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 
 export default function Save({ board, setBoard, boxes, takeScreenshot }) {
   const [showModal, setShowModal] = useState(false);
@@ -116,10 +116,10 @@ export default function Save({ board, setBoard, boxes, takeScreenshot }) {
 
   return (
     <>
-      <MaterialIconsComponent
+      <MaterialCommunityIconsComponent
         onPress={() => setShowModal(true)}
         containerStyle={containerFooter}
-        icon={{ name: "save-alt", size: 28, color: "white" }}
+        icon={{ name: "content-save", size: 28, color: "white" }}
       />
       <ModalComponent
         isVisible={showModal}
@@ -136,8 +136,8 @@ export default function Save({ board, setBoard, boxes, takeScreenshot }) {
                 }}
                 style={styles.itemContainer}
               >
-                <MaterialIconsComponent
-                  icon={{ name: "save-alt", size: 28, color: "#484848" }}
+                <MaterialCommunityIconsComponent
+                  icon={{ name: "content-save", size: 28, color: "#484848" }}
                 />
                 <Text style={styles.text}>{item}</Text>
               </Pressable>
