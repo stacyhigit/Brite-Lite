@@ -12,12 +12,12 @@ import * as SplashScreen from "expo-splash-screen";
 
 import { getAllColors, initDatabase } from "./util/database";
 import { ColorEmpty } from "./models/color";
+import { Board } from "./models/board";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BoardComponent from "./components/BoardComponent";
 import { defaultColor } from "./constants/colors";
-import { Board } from "./models/board";
 
 SplashScreen.preventAutoHideAsync();
 
