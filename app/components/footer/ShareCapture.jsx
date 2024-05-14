@@ -1,11 +1,10 @@
-import { captureRef } from "react-native-view-shot";
 import Share from "react-native-share";
 
 import MaterialIconsComponent from "../ui/MaterialIconsComponent";
 import { playStoreUrl } from "../../constants/values";
 import PropTypes from "prop-types";
 
-export default function ShareCapture({ shareRef }) {
+export default function ShareCapture({ takeScreenshot }) {
   const containerStyle = {
     borderWidth: 2,
     justifyContent: "center",
@@ -16,10 +15,7 @@ export default function ShareCapture({ shareRef }) {
 
   const handleShare = async () => {
     try {
-      const screenshotURI = await captureRef(shareRef, {
-        format: "jpg",
-        quality: 0.7,
-      });
+      const screenshotURI = await takeScreenshot();
       await Share.open({
         title: "Brite-Lite",
         message: "Here's a picture I created with Brite-Lite\n" + playStoreUrl,
@@ -39,5 +35,5 @@ export default function ShareCapture({ shareRef }) {
   );
 }
 ShareCapture.propTypes = {
-  shareRef: PropTypes.object,
+  takeScreenshot: PropTypes.func,
 };

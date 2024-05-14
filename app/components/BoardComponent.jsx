@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useWindowDimensions, View } from "react-native";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import PropTypes from "prop-types";
 
 import BoxComponent from "./BoxComponent";
@@ -8,7 +8,13 @@ import PanAndZoom from "./ui/PanAndZoom";
 import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
-export default function Board({ boxes, setBoxes, activeColor, shareRef }) {
+export default function BoardComponent({
+  boxes,
+  setBoxes,
+  setBoard,
+  activeColor,
+  shareRef,
+}) {
   const { width, height } = useWindowDimensions();
   const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
   const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
@@ -20,13 +26,14 @@ export default function Board({ boxes, setBoxes, activeColor, shareRef }) {
       setBoxes(
         Array.from({ length: boxCount }, (_, count) => new BoxEmpty(count))
       );
+      setBoard((prevBoard) => ({ ...prevBoard, columnCount, rowCount }));
     }
   }, []);
 
-  const setColor = (id) => {
+  const setColor = (index) => {
     setBoxes((prevBoxes) =>
       prevBoxes.map((prevbox) =>
-        prevbox.id === id ? { ...prevbox, color: activeColor } : prevbox
+        prevbox.index === index ? { ...prevbox, color: activeColor } : prevbox
       )
     );
   };
@@ -39,16 +46,18 @@ export default function Board({ boxes, setBoxes, activeColor, shareRef }) {
     >
       <ViewShot ref={shareRef} collapsable={false} style={styles.viewShot}>
         <View style={styles.boxContainer}>
-          {boxes && boxes.map((box) => <BoxComponent key={box.id} box={box} />)}
+          {boxes &&
+            boxes.map((box) => <BoxComponent key={box.index} box={box} />)}
         </View>
       </ViewShot>
     </PanAndZoom>
   );
 }
 
-Board.propTypes = {
+BoardComponent.propTypes = {
   boxes: PropTypes.array,
   setBoxes: PropTypes.func,
+  setBoard: PropTypes.func,
   activeColor: PropTypes.object,
   shareRef: PropTypes.object,
 };

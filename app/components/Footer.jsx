@@ -1,22 +1,50 @@
 import { StyleSheet, View } from "react-native";
+import { captureRef } from "react-native-view-shot";
+
 import PropTypes from "prop-types";
 
-import MaterialIconsComponent from "./ui/MaterialIconsComponent";
 import ShareCapture from "./footer/ShareCapture";
 import Save from "./footer/Save";
-import { containerFooter } from "../constants/styles";
 import EraseBoard from "./footer/EraseBoard";
 
-export default function Footer({ eraseAllBoxes, shareRef }) {
+export default function Footer({
+  boxes,
+  board,
+  setBoard,
+  eraseAllBoxes,
+  shareRef,
+}) {
+  const takeScreenshot = async () => {
+    try {
+      const screenshotURI = await captureRef(shareRef, {
+        format: "jpg",
+        quality: 0.7,
+        fileName: "Brite-Lite-",
+      });
+      return screenshotURI;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.footerContainer}>
       <EraseBoard eraseAllBoxes={eraseAllBoxes} />
-      <ShareCapture shareRef={shareRef} />
+      <Save
+        boxes={boxes}
+        board={board}
+        setBoard={setBoard}
+        takeScreenshot={takeScreenshot}
+      />
+      <ShareCapture takeScreenshot={takeScreenshot} />
     </View>
   );
 }
 
 Footer.propTypes = {
+  boxes: PropTypes.array,
+  board: PropTypes.object,
+  setBoard: PropTypes.func,
   eraseAllBoxes: PropTypes.func,
   shareRef: PropTypes.object,
 };
