@@ -1,9 +1,9 @@
 import { Pressable } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import PropTypes from "prop-types";
 import { pressedStyle } from "../../constants/styles";
 
-export default function MaterialIconsComponent({
+export default function MaterialCommunityIconsComponent({
   onPress,
   containerStyle,
   icon,
@@ -13,12 +13,16 @@ export default function MaterialIconsComponent({
       style={({ pressed }) => [containerStyle, pressed && pressedStyle]}
       onPress={onPress}
     >
-      <MaterialIcons name={icon.name} size={icon.size} color={icon.color} />
+      <MaterialCommunityIcons
+        name={icon.name}
+        size={icon.size}
+        color={icon.color}
+      />
     </Pressable>
   );
 }
 
-MaterialIconsComponent.propTypes = {
+MaterialCommunityIconsComponent.propTypes = {
   onPress: PropTypes.func,
   containerStyle: PropTypes.object,
   icon: PropTypes.object,

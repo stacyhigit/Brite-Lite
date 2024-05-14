@@ -1,8 +1,8 @@
 import Share from "react-native-share";
-
-import MaterialIconsComponent from "../ui/MaterialIconsComponent";
-import { playStoreUrl } from "../../constants/values";
 import PropTypes from "prop-types";
+
+import { playStoreUrl } from "../../constants/values";
+import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 
 export default function ShareCapture({ takeScreenshot }) {
   const containerStyle = {
@@ -27,10 +27,10 @@ export default function ShareCapture({ takeScreenshot }) {
   };
 
   return (
-    <MaterialIconsComponent
+    <MaterialCommunityIconsComponent
       onPress={handleShare}
       containerStyle={containerStyle}
-      icon={{ name: "share", size: 28, color: "white" }}
+      icon={{ name: "share-variant", size: 28, color: "white" }}
     />
   );
 }

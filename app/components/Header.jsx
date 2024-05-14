@@ -1,14 +1,14 @@
 import { Image, Pressable, StyleSheet, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
-
+import { useState } from "react";
 import PropTypes from "prop-types";
 
-import { useState } from "react";
 import { ColorEmpty } from "../models/color";
-import ModalColorPicker from "./ui/ModalColorPicker";
 import { circledStyle, pressedStyle } from "../constants/styles";
-import SwatchesCustom from "./ui/SwatchesCustom";
 import { basicSwatches } from "../constants/colors";
+
+import ModalColorPicker from "./ui/ModalColorPicker";
+import SwatchesCustom from "./ui/SwatchesCustom";
+import MaterialCommunityIconsComponent from "./ui/MaterialCommunityIconsComponent";
 export default function Header({
   activeColor,
   setActiveColor,
@@ -37,10 +37,8 @@ export default function Header({
           setActiveColor={setActiveColor}
         />
         <View style={activeColor.id === "empty" && circledStyle}>
-          <Entypo
-            name="eraser"
-            size={24}
-            color="white"
+          <MaterialCommunityIconsComponent
+            icon={{ name: "eraser", size: 24, color: "white" }}
             onPress={() => setActiveColor(new ColorEmpty())}
           />
         </View>
