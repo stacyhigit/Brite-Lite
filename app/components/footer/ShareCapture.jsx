@@ -6,7 +6,6 @@ import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsCompone
 
 export default function ShareCapture({ takeScreenshot }) {
   const containerStyle = {
-    borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 3,
@@ -15,7 +14,10 @@ export default function ShareCapture({ takeScreenshot }) {
 
   const handleShare = async () => {
     try {
-      const screenshotURI = await takeScreenshot();
+      const screenshotURI = await takeScreenshot({
+        format: "jpg",
+        fileName: "Brite-Lite-",
+      });
       await Share.open({
         title: "Brite-Lite",
         message: "Here's a picture I created with Brite-Lite\n" + playStoreUrl,

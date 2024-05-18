@@ -120,10 +120,10 @@ export default function PanAndZoom({
 
       translateX.value = clamp(-1 * boundX, boundX, toX);
       translateY.value = clamp(-1 * boundY, boundY, toY);
-      scale.value = clamp(0.7, toScale, 2.5);
+      scale.value = clamp(0.6, toScale, 2.5);
     })
     .onEnd(() => {
-      if (scale.value < 0.75) {
+      if (scale.value < 0.61) {
         scale.value = withTiming(1);
         translateX.value = withTiming(0);
         translateY.value = withTiming(0);

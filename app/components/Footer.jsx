@@ -6,21 +6,19 @@ import PropTypes from "prop-types";
 import ShareCapture from "./footer/ShareCapture";
 import Save from "./footer/Save";
 import EraseBoard from "./footer/EraseBoard";
+import Open from "./footer/Open";
 
 export default function Footer({
   boxes,
+  setBoxes,
   board,
   setBoard,
   eraseAllBoxes,
   shareRef,
 }) {
-  const takeScreenshot = async () => {
+  const takeScreenshot = async (options) => {
     try {
-      const screenshotURI = await captureRef(shareRef, {
-        format: "jpg",
-        quality: 0.7,
-        fileName: "Brite-Lite-",
-      });
+      const screenshotURI = await captureRef(shareRef, options);
       return screenshotURI;
     } catch (error) {
       console.log(error);
@@ -32,10 +30,12 @@ export default function Footer({
       <EraseBoard eraseAllBoxes={eraseAllBoxes} />
       <Save
         boxes={boxes}
+        setBoxes={setBoxes}
         board={board}
         setBoard={setBoard}
         takeScreenshot={takeScreenshot}
       />
+      <Open board={board} />
       <ShareCapture takeScreenshot={takeScreenshot} />
     </View>
   );
@@ -43,6 +43,7 @@ export default function Footer({
 
 Footer.propTypes = {
   boxes: PropTypes.array,
+  setBoxes: PropTypes.func,
   board: PropTypes.object,
   setBoard: PropTypes.func,
   eraseAllBoxes: PropTypes.func,

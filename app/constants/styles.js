@@ -21,3 +21,7 @@ export const containerFooter = {
   paddingTop: 3,
   width: 32,
 };
+export const thumbnail = {
+  resizeMode: "contain",
+  backgroundColor: "#ccc",
+};

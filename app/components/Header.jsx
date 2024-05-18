@@ -38,7 +38,7 @@ export default function Header({
         />
         <View style={activeColor.id === "empty" && circledStyle}>
           <MaterialCommunityIconsComponent
-            icon={{ name: "eraser", size: 24, color: "white" }}
+            icon={{ name: "eraser", size: 28, color: "white" }}
             onPress={() => setActiveColor(new ColorEmpty())}
           />
         </View>

@@ -25,6 +25,7 @@ ButtonComponent.propTypes = {
 const styles = StyleSheet.create({
   button: {
     flex: 1,
+    justifyContent: "center",
     paddingHorizontal: 12,
     paddingVertical: 8,
     elevation: 2,
@@ -42,5 +43,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
+    textTransform: "uppercase",
   },
 });

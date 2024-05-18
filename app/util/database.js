@@ -1,4 +1,6 @@
 import * as SQLite from "expo-sqlite/next";
+import { Color } from "../models/color";
+import { Box } from "../models/box";
 
 const databaseName = "briteLite.db";
 
@@ -6,28 +8,38 @@ const boxesInsertStatement =
   "INSERT INTO boxes (box_index, color_id, color_hex, board_id ) VALUES ($box_index, $color_id, $color_hex, $board_id)";
 
 async function openDatabase() {
-  return await SQLite.openDatabaseAsync(databaseName, {
+  const db = await SQLite.openDatabaseAsync(databaseName, {
     useNewConnection: true,
   });
+  await db.execAsync("PRAGMA foreign_keys = ON");
+  return db;
 }
 
 export async function initDatabase() {
+  const DATABASE_VERSION = 2;
   const db = await openDatabase();
   try {
+    let { user_version } = await db.getFirstAsync("PRAGMA user_version");
+    if (user_version !== 2) {
+      await db.execAsync(`DROP TABLE IF EXISTS boards`);
+      await db.execAsync(`DROP TABLE IF EXISTS boxes`);
+      await db.execAsync(`DROP TABLE IF EXISTS colors`);
+      await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+    }
+
     return await db.execAsync(
       `PRAGMA foreign_keys = ON;
 			CREATE TABLE IF NOT EXISTS boards (
 				id INTEGER PRIMARY KEY NOT NULL,
-				name TEXT NOT NULL,
+				imagePath TEXT NOT NULL,
 				rowCount INTEGER NOT NULL,
-				columnCount INTEGER NOT NULL,
-				isActive INTEGER);
+				columnCount INTEGER NOT NULL);
 			CREATE TABLE IF NOT EXISTS boxes (
-				id INTEGER PRIMARY KEY NOT NULL,
 				box_index INTEGER NOT NULL,
 				color_id TEXT NOT NULL,
 				color_hex TEXT NOT NULL,
 				board_id INTEGER NOT NULL,
+				PRIMARY KEY (box_index, board_id)
 				FOREIGN KEY(board_id) REFERENCES boards(id)
 				ON DELETE CASCADE);
 			CREATE TABLE IF NOT EXISTS colors (
@@ -74,29 +86,23 @@ export async function deleteColor(id) {
   }
 }
 
-export async function deleteAllColors() {
-  const db = await openDatabase();
-  try {
-    await db.runAsync("DELETE FROM colors");
-  } catch (error) {
-    console.log("error deleteAllColors:", error);
-  } finally {
-    db.closeAsync();
+export async function saveBoard(boxes, board) {
+  if (board.id) {
+    await deleteBoard(board.id);
   }
+  return insertBoard(boxes, board);
 }
 
-export async function insertBoard(boxes, board) {
+async function insertBoard(boxes, board) {
   const db = await openDatabase();
   const insertBoxes = await db.prepareAsync(boxesInsertStatement);
   try {
     let resBoard = await db.runAsync(
-      "INSERT INTO boards (name, rowCount, columnCount, isActive) VALUES (?,?,?,?)",
-      "test",
+      "INSERT INTO boards (imagePath, rowCount, columnCount) VALUES (?,?,?)",
+      board.imagePath,
       board.rowCount,
-      board.columnCount,
-      0
+      board.columnCount
     );
-
     for (const box of boxes) {
       await insertBoxes.executeAsync({
         $box_index: box.index,
@@ -105,7 +111,6 @@ export async function insertBoard(boxes, board) {
         $board_id: resBoard.lastInsertRowId,
       });
     }
-
     return resBoard.lastInsertRowId;
   } catch (error) {
     console.log("error insertBoard", error);
@@ -119,30 +124,44 @@ export async function insertBoard(boxes, board) {
   }
 }
 
-export async function updateBoard(boxes, boardId) {
+export async function updateBoardImagePath(id, path) {
   const db = await openDatabase();
-  const insertBoxes = await db.prepareAsync(boxesInsertStatement);
-
   try {
-    await db.runAsync("DELETE FROM boxes WHERE board_id = ?", boardId);
-
-    for (const box of boxes) {
-      await insertBoxes.executeAsync({
-        $box_index: box.index,
-        $color_id: box.color.id,
-        $color_hex: box.color.hex,
-        $board_id: boardId,
-      });
-    }
-    return;
+    return await db.runAsync(
+      "UPDATE boards SET imagePath = ? WHERE id = ?",
+      path,
+      id
+    );
   } catch (error) {
-    console.log("error insertBoard", error);
+    console.log("error updateBoardImagePath", error);
   } finally {
-    try {
-      await insertBoxes.finalizeAsync();
-    } catch (error) {
-      console.log("error updateBoard", error);
-    }
+    db.closeAsync();
+  }
+}
+
+export async function deleteBoard(id) {
+  const db = await openDatabase();
+  try {
+    await db.runAsync("DELETE FROM boards WHERE id = ?", id);
+  } catch (error) {
+    console.log("error deleteBoard:", error);
+  } finally {
+    db.closeAsync();
+  }
+}
+
+export async function deleteBoards(ids) {
+  const mask = Array(ids.size).fill("?").join();
+
+  const db = await openDatabase();
+  const statement = await db.prepareAsync(
+    `DELETE FROM boards WHERE id IN (${mask})`
+  );
+  try {
+    return await statement.executeAsync(Array.from(ids));
+  } catch (error) {
+    console.log("error deleteBoards", error);
+  } finally {
     db.closeAsync();
   }
 }
@@ -150,7 +169,7 @@ export async function updateBoard(boxes, boardId) {
 export async function getAllBoards() {
   const db = await openDatabase();
   try {
-    return await db.getAllAsync("SELECT * FROM boards");
+    return await db.getAllAsync("SELECT * FROM boards ORDER BY id DESC");
   } catch (error) {
     console.log("error getAllBoards", error);
   } finally {
@@ -158,12 +177,18 @@ export async function getAllBoards() {
   }
 }
 
-export async function getAllBoxes() {
+export async function getBoxes(id) {
   const db = await openDatabase();
   try {
-    return await db.getAllAsync("SELECT * FROM boxes");
+    const boxes = await db.getAllAsync(
+      "SELECT * FROM boxes WHERE board_id = ?",
+      id
+    );
+    return boxes.map((box) => {
+      return new Box(box.box_index, new Color(box.color_id, box.color_hex));
+    });
   } catch (error) {
-    console.log("error getAllBoxes", error);
+    console.log("error getBoxes", error);
   } finally {
     db.closeAsync();
   }

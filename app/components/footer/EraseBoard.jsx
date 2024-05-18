@@ -19,11 +19,11 @@ export default function EraseBoard({ eraseAllBoxes }) {
       <MaterialCommunityIconsComponent
         onPress={() => setShowModal(true)}
         containerStyle={containerFooter}
-        icon={{ name: "delete-forever", size: 28, color: "white" }}
+        icon={{ name: "file-plus", size: 28, color: "white" }}
       />
       <ModalComponent
         isVisible={showModal}
-        title={"Erase Board?"}
+        title={"Create New Board?"}
         body={"This will permanently erase your current board"}
         closeModal={() => setShowModal(false)}
         button1={{

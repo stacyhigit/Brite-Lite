@@ -12,7 +12,12 @@ export default function ModalComponent({
   children,
 }) {
   return (
-    <Modal visible={isVisible} transparent={true} animationType="slide">
+    <Modal
+      visible={isVisible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={() => closeModal}
+    >
       <Pressable style={styles.container} onPress={closeModal}>
         <Pressable style={styles.modalContainer} onPress={undefined}>
           <View style={styles.innerContainer}>

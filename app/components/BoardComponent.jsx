@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { useWindowDimensions, View } from "react-native";
 import { useLayoutEffect } from "react";
 import PropTypes from "prop-types";
@@ -8,25 +8,37 @@ import PanAndZoom from "./ui/PanAndZoom";
 import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
+
+import {
+  boxes as fishBoxes,
+  board as fishBoard,
+} from "../../assets/templates/fish";
 export default function BoardComponent({
   boxes,
   setBoxes,
+  board,
   setBoard,
+  setInitialSize,
   activeColor,
   shareRef,
 }) {
   const { width, height } = useWindowDimensions();
-  const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
-  const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
-  const boxCount = columnCount * rowCount;
+  let columnCount = Math.min(Math.floor(width / boxSize.width), 33);
+  let rowCount = Math.min(Math.floor(height / boxSize.height), 48);
 
-  const styles = makeStyles(columnCount, rowCount);
   useLayoutEffect(() => {
-    if (columnCount > 0) {
+    if (columnCount > 0 && !boxes) {
       setBoxes(
-        Array.from({ length: boxCount }, (_, count) => new BoxEmpty(count))
+        Array.from(
+          { length: columnCount * rowCount },
+          (_, count) => new BoxEmpty(count)
+        )
       );
       setBoard((prevBoard) => ({ ...prevBoard, columnCount, rowCount }));
+      setInitialSize({
+        columnCount: columnCount,
+        rowCount: rowCount,
+      });
     }
   }, []);
 
@@ -45,7 +57,16 @@ export default function BoardComponent({
       setColor={setColor}
     >
       <ViewShot ref={shareRef} collapsable={false} style={styles.viewShot}>
-        <View style={styles.boxContainer}>
+        <View
+          style={[
+            styles.boxContainer,
+            {
+              flex: board.columnCount,
+              width: board.columnCount * boxSize.width,
+              height: board.rowCount * boxSize.height,
+            },
+          ]}
+        >
           {boxes &&
             boxes.map((box) => <BoxComponent key={box.index} box={box} />)}
         </View>
@@ -57,24 +78,20 @@ export default function BoardComponent({
 BoardComponent.propTypes = {
   boxes: PropTypes.array,
   setBoxes: PropTypes.func,
+  board: PropTypes.object,
   setBoard: PropTypes.func,
+  setInitialSize: PropTypes.func,
   activeColor: PropTypes.object,
   shareRef: PropTypes.object,
 };
 
-const makeStyles = (columnCount, rowCount) => {
-  const styles = StyleSheet.create({
-    boxContainer: {
-      flex: columnCount,
-      flexDirection: "row",
-      flexWrap: "wrap",
-      width: columnCount * boxSize.width,
-      height: rowCount * boxSize.height,
-    },
-    viewShot: {
-      width: "100%",
-      height: "100%",
-    },
-  });
-  return styles;
-};
+const styles = StyleSheet.create({
+  viewShot: {
+    width: "100%",
+    height: "100%",
+  },
+  boxContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+});

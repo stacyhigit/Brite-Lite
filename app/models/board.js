@@ -1,7 +1,12 @@
 export class Board {
-  constructor(id, columnCount, rowCount) {
+  constructor(id = null, imagePath = "", columnCount = 0, rowCount = 0) {
     this.id = id;
+    this.imagePath = imagePath;
     this.columnCount = columnCount;
     this.rowCount = rowCount;
+  }
+
+  image() {
+    return `${this.imagePath}${this.id}.jpg`;
   }
 }
