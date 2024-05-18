@@ -8,11 +8,6 @@ import PanAndZoom from "./ui/PanAndZoom";
 import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
-
-import {
-  boxes as fishBoxes,
-  board as fishBoard,
-} from "../../assets/templates/fish";
 export default function BoardComponent({
   boxes,
   setBoxes,
@@ -23,8 +18,8 @@ export default function BoardComponent({
   shareRef,
 }) {
   const { width, height } = useWindowDimensions();
-  let columnCount = Math.min(Math.floor(width / boxSize.width), 33);
-  let rowCount = Math.min(Math.floor(height / boxSize.height), 48);
+  const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
+  const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
 
   useLayoutEffect(() => {
     if (columnCount > 0 && !boxes) {
