@@ -26,7 +26,7 @@ import { Color } from "../../models/color";
 
 import SwatchesCustom from "./SwatchesCustom";
 import DeleteColor from "./DeleteColor";
-import MaterialCommunityIconsComponent from "./MaterialCommunityIconsComponent";
+import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 
 export default function ModalColorPicker({
   showModal,

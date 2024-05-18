@@ -28,8 +28,7 @@
     "react-native-share": "^10.2.0",
     "react-native-svg": "14.1.0",
     "react-native-view-shot": "3.8.0",
-    "reanimated-color-picker": "^3.0.3",
-    "expo-dev-client": "~3.3.11"
+    "reanimated-color-picker": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

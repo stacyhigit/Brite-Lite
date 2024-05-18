@@ -3,10 +3,10 @@ import { captureRef } from "react-native-view-shot";
 
 import PropTypes from "prop-types";
 
-import ShareCapture from "./footer/ShareCapture";
-import Save from "./footer/Save";
-import EraseBoard from "./footer/EraseBoard";
-import Open from "./footer/Open";
+import ShareCapture from "./ShareCapture";
+import Save from "./Save";
+import EraseBoard from "./EraseBoard";
+import Open from "./Open";
 
 export default function Footer({
   boxes,

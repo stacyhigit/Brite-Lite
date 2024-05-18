@@ -2,13 +2,13 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-import { ColorEmpty } from "../models/color";
-import { circledStyle, pressedStyle } from "../constants/styles";
-import { basicSwatches } from "../constants/colors";
+import { ColorEmpty } from "../../models/color";
+import { circledStyle, pressedStyle } from "../../constants/styles";
+import { basicSwatches } from "../../constants/colors";
 
-import ModalColorPicker from "./ui/ModalColorPicker";
-import SwatchesCustom from "./ui/SwatchesCustom";
-import MaterialCommunityIconsComponent from "./ui/MaterialCommunityIconsComponent";
+import ModalColorPicker from "./ModalColorPicker";
+import SwatchesCustom from "./SwatchesCustom";
+import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 export default function Header({
   activeColor,
   setActiveColor,
@@ -27,7 +27,7 @@ export default function Header({
           onPress={() => setShowModal(true)}
         >
           <Image
-            source={require("../../assets/color_circle.png")}
+            source={require("../../../assets/color_circle.png")}
             style={styles.colorPickerImg}
           />
         </Pressable>

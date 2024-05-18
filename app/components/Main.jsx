@@ -15,8 +15,8 @@ import { getAllColors, getBoxes, initDatabase } from "../util/database";
 import { Board } from "../models/board";
 import { boxColors, defaultColor } from "../constants/colors";
 
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "./header/Header";
+import Footer from "./footer/Footer";
 import BoardComponent from "./BoardComponent";
 import { BoxEmpty } from "../models/box";
 
