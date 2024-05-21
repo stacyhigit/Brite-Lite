@@ -1,17 +1,8 @@
-import {
-  Platform,
-  StyleSheet,
-  View,
-  StatusBar,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, View, StatusBar, ActivityIndicator } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import PropTypes from "prop-types";
 
 import { getAllColors, getBoxes, initDatabase } from "../util/database";

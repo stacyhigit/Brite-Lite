@@ -17,5 +17,10 @@
 		"react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
 		"react/prop-types": 1
-	}
+	},
+	"ignorePatterns": [
+			"node_modules/",
+			"**/node_modules/",
+			"/**/node_modules/*"
+		]
 }
