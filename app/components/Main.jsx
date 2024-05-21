@@ -1,6 +1,5 @@
 import {
   Platform,
-  SafeAreaView,
   StyleSheet,
   View,
   StatusBar,
@@ -9,6 +8,10 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import PropTypes from "prop-types";
 
 import { getAllColors, getBoxes, initDatabase } from "../util/database";
@@ -21,9 +24,6 @@ import BoardComponent from "./BoardComponent";
 import { BoxEmpty } from "../models/box";
 
 SplashScreen.preventAutoHideAsync();
-
-const statusBarHeight = Platform.OS == "android" ? StatusBar.currentHeight : 0;
-
 export default function Main({ route }) {
   const visibility = NavigationBar.useVisibility();
 
@@ -39,6 +39,8 @@ export default function Main({ route }) {
   const [customColors, setCustomColors] = useState([]);
 
   const shareRef = useRef();
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (visibility === "visible") {
@@ -116,7 +118,10 @@ export default function Main({ route }) {
   };
 
   return (
-    <SafeAreaView style={styles.outerContainer} onLayout={onLayoutRootView}>
+    <View
+      style={[styles.outerContainer, { paddingTop: insets.top }]}
+      onLayout={onLayoutRootView}
+    >
       <StatusBar barStyle="light-content" backgroundColor="black" />
       <Header
         activeColor={activeColor}
@@ -149,7 +154,7 @@ export default function Main({ route }) {
         eraseAllBoxes={eraseAllBoxes}
         shareRef={shareRef}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -161,7 +166,6 @@ const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     backgroundColor: "black",
-    marginTop: statusBarHeight,
   },
   container: {
     flex: 1,
