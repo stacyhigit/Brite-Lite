@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { useWindowDimensions, View } from "react-native";
 import { useLayoutEffect } from "react";
 import PropTypes from "prop-types";
