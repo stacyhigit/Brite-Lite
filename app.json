@@ -2,7 +2,7 @@
   "expo": {
     "name": "Brite-Lite",
     "slug": "Brite-Lite",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Create a glowing picture with brightly colored lights",
     "backgroundColor": "#000000",
     "orientation": "portrait",
@@ -24,12 +24,14 @@
     },
     "android": {
       "package": "com.eatthetoad.britelite",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-			"blockedPermissions": ["android.permission.READ_MEDIA_AUDIO"]
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_AUDIO"
+      ]
     },
     "plugins": [
       [
@@ -38,9 +40,20 @@
           "position": "absolute",
           "visibility": "hidden",
           "behavior": "inset-swipe",
-          "backgroundColor": "#00000095"
+          "backgroundColor": "#00000080"
         }
       ]
-		]
+    ],
+    "extra": {
+      "expo-navigation-bar": {
+        "position": "absolute",
+        "visibility": "hidden",
+        "behavior": "inset-swipe",
+        "backgroundColor": "#00000080"
+      },
+      "eas": {
+        "projectId": "738965ad-52ad-4502-bb26-e3341641a968"
+      }
+    }
   }
 }

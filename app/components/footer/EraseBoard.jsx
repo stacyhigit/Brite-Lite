@@ -24,7 +24,7 @@ export default function EraseBoard({ eraseAllBoxes }) {
       <ModalComponent
         isVisible={showModal}
         title={"Erase Board?"}
-        body={"This will permanently erase your current board"}
+        body={"This will permanently erase your board"}
         closeModal={() => setShowModal(false)}
         button1={{
           text: "Cancel",
