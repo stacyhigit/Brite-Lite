@@ -1,36 +1,25 @@
 import { StyleSheet } from "react-native";
 import { useWindowDimensions, View } from "react-native";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import PropTypes from "prop-types";
 
 import BoxComponent from "./BoxComponent";
 import PanAndZoom from "./ui/PanAndZoom";
-import { BoxEmpty } from "../models/box";
 import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
-export default function BoardComponent({
-  boxes,
-  setBoxes,
-  board,
-  setBoard,
-  setInitialSize,
-  activeColor,
-  shareRef,
-}) {
+import { BoardContext } from "../store/board-context";
+export default function BoardComponent({ activeColor, shareRef }) {
   const { width, height } = useWindowDimensions();
   const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
   const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
 
+  const boardCtx = useContext(BoardContext);
+
   useLayoutEffect(() => {
-    if (columnCount > 0 && !boxes) {
-      setBoxes(
-        Array.from(
-          { length: columnCount * rowCount },
-          (_, count) => new BoxEmpty(count)
-        )
-      );
-      setBoard((prevBoard) => ({ ...prevBoard, columnCount, rowCount }));
-      setInitialSize({
+    if (columnCount > 0 && !boardCtx.boxes) {
+      boardCtx.setNewBoxes(columnCount, rowCount);
+      boardCtx.setNewBoard(columnCount, rowCount);
+      boardCtx.setInitialSize({
         columnCount: columnCount,
         rowCount: rowCount,
       });
@@ -38,7 +27,7 @@ export default function BoardComponent({
   }, []);
 
   const setColor = (index) => {
-    setBoxes((prevBoxes) =>
+    boardCtx.setBoxes((prevBoxes) =>
       prevBoxes.map((prevbox) =>
         prevbox.index === index ? { ...prevbox, color: activeColor } : prevbox
       )
@@ -56,14 +45,16 @@ export default function BoardComponent({
           style={[
             styles.boxContainer,
             {
-              flex: board.columnCount,
-              width: board.columnCount * boxSize.width,
-              height: board.rowCount * boxSize.height,
+              flex: boardCtx.board.columnCount,
+              width: boardCtx.board.columnCount * boxSize.width,
+              height: boardCtx.board.rowCount * boxSize.height,
             },
           ]}
         >
-          {boxes &&
-            boxes.map((box) => <BoxComponent key={box.index} box={box} />)}
+          {boardCtx.boxes &&
+            boardCtx.boxes.map((box) => (
+              <BoxComponent key={box.index} box={box} />
+            ))}
         </View>
       </ViewShot>
     </PanAndZoom>

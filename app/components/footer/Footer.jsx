@@ -8,14 +8,7 @@ import Save from "./Save";
 import EraseBoard from "./EraseBoard";
 import Open from "./Open";
 
-export default function Footer({
-  boxes,
-  setBoxes,
-  board,
-  setBoard,
-  eraseAllBoxes,
-  shareRef,
-}) {
+export default function Footer({ shareRef }) {
   const takeScreenshot = async (options) => {
     try {
       const screenshotURI = await captureRef(shareRef, options);
@@ -27,15 +20,9 @@ export default function Footer({
 
   return (
     <View style={styles.footerContainer}>
-      <EraseBoard eraseAllBoxes={eraseAllBoxes} />
-      <Save
-        boxes={boxes}
-        setBoxes={setBoxes}
-        board={board}
-        setBoard={setBoard}
-        takeScreenshot={takeScreenshot}
-      />
-      <Open board={board} />
+      <EraseBoard />
+      <Save takeScreenshot={takeScreenshot} />
+      <Open />
       <ShareCapture takeScreenshot={takeScreenshot} />
     </View>
   );

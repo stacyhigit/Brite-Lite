@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { thumbnailWidth } from "../../constants/values";
 import { thumbnail } from "../../constants/styles";
 
-export default function ThumbnailPreset({ board, boxes, handlePress }) {
+export default function ThumbnailPreset({ board, handlePress }) {
   return (
-    <Pressable onPress={() => handlePress(board, boxes)}>
+    <Pressable onPress={handlePress}>
       <Image
         source={board.presetImagePath}
         style={[
@@ -23,7 +23,5 @@ export default function ThumbnailPreset({ board, boxes, handlePress }) {
 }
 ThumbnailPreset.propTypes = {
   board: PropTypes.object,
-  boxes: PropTypes.array,
-  imagePath: PropTypes.string,
   handlePress: PropTypes.func,
 };
