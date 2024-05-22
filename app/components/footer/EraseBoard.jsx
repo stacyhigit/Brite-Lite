@@ -1,16 +1,19 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useContext, useState } from "react";
 
 import ModalComponent from "../ui/ModalComponent";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
 import { containerFooter } from "../../constants/styles";
+import { BoardContext } from "../../store/board-context";
 
-export default function EraseBoard({ eraseAllBoxes }) {
+export default function EraseBoard() {
   const [showModal, setShowModal] = useState(false);
 
+  const boardCtx = useContext(BoardContext);
+
   const handleEraseAllBoxes = () => {
-    eraseAllBoxes();
+    boardCtx.setNewBoxes();
+    boardCtx.setNewBoard();
     setShowModal(false);
   };
 
@@ -40,7 +43,3 @@ export default function EraseBoard({ eraseAllBoxes }) {
     </>
   );
 }
-
-EraseBoard.propTypes = {
-  eraseAllBoxes: PropTypes.func,
-};

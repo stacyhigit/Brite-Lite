@@ -5,8 +5,10 @@ export class Board {
     this.columnCount = columnCount;
     this.rowCount = rowCount;
   }
+}
 
-  image() {
-    return `${this.imagePath}${this.id}.jpg`;
+export class BoardEmpty extends Board {
+  constructor(columnCount, rowCount) {
+    super(null, "", columnCount, rowCount);
   }
 }

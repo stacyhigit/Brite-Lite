@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import * as FileSystem from "expo-file-system";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import * as MediaLibrary from "expo-media-library";
 import * as Burnt from "burnt";
@@ -19,11 +19,14 @@ import { containerFooter } from "../../constants/styles";
 import { saveBoard, updateBoardImagePath } from "../../util/database";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
+import { BoardContext } from "../../store/board-context";
 
-export default function Save({ board, setBoard, boxes, takeScreenshot }) {
+export default function Save({ takeScreenshot }) {
   const [showModal, setShowModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  const boardCtx = useContext(BoardContext);
 
   const saveList = ["Image file", "Brite-Lite file"];
   const docDir = FileSystem.documentDirectory;
@@ -45,7 +48,7 @@ export default function Save({ board, setBoard, boxes, takeScreenshot }) {
     const newImagePath = docDir + newBoardId + Date.now() + ".jpg";
     moveImage(screenshotURI, newImagePath);
     deleteImage(board.imagePath);
-    setBoard((prevboard) => ({
+    boardCtx.setBoard((prevboard) => ({
       ...prevboard,
       id: newBoardId,
       imagePath: newImagePath,
@@ -99,9 +102,9 @@ export default function Save({ board, setBoard, boxes, takeScreenshot }) {
   const handleSave = async (item) => {
     setIsSaving(true);
     if (item === "Brite-Lite file") {
-      const newBoardId = await saveBoard(boxes, board);
+      const newBoardId = await saveBoard(boardCtx.boxes, boardCtx.board);
       if (newBoardId) {
-        await handleScreenshot(newBoardId, board);
+        await handleScreenshot(newBoardId, boardCtx.board);
         setIsSaving(false);
         setShowModal(false);
         showSaveToast("Saved successfully");

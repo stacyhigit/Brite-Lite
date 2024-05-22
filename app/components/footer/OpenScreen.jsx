@@ -1,34 +1,25 @@
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import {
-  boxes as fishBoxes,
-  board as fishBoard,
-} from "../../../assets/templates/fish";
-import {
-  boxes as flowersBoxes,
-  board as flowersBoard,
-} from "../../../assets/templates/flowers";
+import { board as fishBoard } from "../../../assets/templates/fish";
+import { board as flowersBoard } from "../../../assets/templates/flowers";
 import { deleteBoards, getAllBoards } from "../../util/database";
-import Thumbnail from "./Thumbnail";
+import { buttonColors } from "../../constants/colors";
+import { BoardContext } from "../../store/board-context";
+
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import ModalComponent from "../ui/ModalComponent";
-import { buttonColors } from "../../constants/colors";
+import Thumbnail from "./Thumbnail";
 import ThumbnailPreset from "./ThumbnailPreset";
 
-export default function OpenScreen({ navigation, route }) {
+export default function OpenScreen({ navigation }) {
   const [allBoards, setAllBoards] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [checkedList, setCheckedList] = useState(() => new Set());
   const [showModal, setShowModal] = useState(false);
+
+  const boardCtx = useContext(BoardContext);
 
   const handlePress = async (board, boxes = null) => {
     if (showCheckboxes) {
@@ -61,12 +52,12 @@ export default function OpenScreen({ navigation, route }) {
 
   const handleDeleteRequest = async () => {
     await deleteBoards(checkedList);
+    setCheckedList(new Set());
+    setShowCheckboxes(false);
     getBoards();
     setShowModal(false);
-    if (checkedList.has(route.params.boardId)) {
-      navigation.navigate("Main", { erase: true });
-    } else {
-      navigation.navigate("Main");
+    if (checkedList.has(boardCtx.board.id)) {
+      eraseAllBoxes();
     }
   };
 
@@ -74,6 +65,11 @@ export default function OpenScreen({ navigation, route }) {
     const allBoards = await getAllBoards();
     setAllBoards(allBoards);
   }
+
+  const eraseAllBoxes = () => {
+    boardCtx.setNewBoard();
+    boardCtx.setNewBoxes();
+  };
 
   useEffect(() => {
     getBoards();
@@ -117,13 +113,11 @@ export default function OpenScreen({ navigation, route }) {
           <View style={styles.imageContainer}>
             <ThumbnailPreset
               board={fishBoard}
-              boxes={fishBoxes}
-              handlePress={() => handlePress(fishBoard, fishBoxes)}
+              handlePress={() => handlePress(fishBoard, "fish")}
             />
             <ThumbnailPreset
               board={flowersBoard}
-              boxes={flowersBoxes}
-              handlePress={() => handlePress(flowersBoard, flowersBoxes)}
+              handlePress={() => handlePress(flowersBoard, "flowers")}
             />
           </View>
         </View>
@@ -153,7 +147,6 @@ export default function OpenScreen({ navigation, route }) {
 
 OpenScreen.propTypes = {
   navigation: PropTypes.object,
-  route: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
@@ -181,10 +174,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 18,
-  },
-  image: {
-    resizeMode: "contain",
-    backgroundColor: "#ccc",
   },
   alignRight: {
     marginLeft: "auto",
