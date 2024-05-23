@@ -15,7 +15,10 @@ import * as Burnt from "burnt";
 import PropTypes from "prop-types";
 
 import ModalComponent from "../ui/ModalComponent";
-import { containerFooter } from "../../constants/styles";
+import {
+  activityIndicatorModal,
+  containerFooter,
+} from "../../constants/styles";
 import { saveBoard, updateBoardImagePath } from "../../util/database";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
@@ -156,7 +159,7 @@ export default function Save({ takeScreenshot }) {
       >
         <>
           {isSaving && (
-            <ActivityIndicator size="large" style={styles.activityIndicator} />
+            <ActivityIndicator size="large" style={activityIndicatorModal} />
           )}
           <View>
             {saveList.map((item) => {
@@ -223,10 +226,6 @@ const styles = StyleSheet.create({
     color: "#484848",
     paddingHorizontal: 16,
     marginHorizontal: 24,
-  },
-  activityIndicator: {
-    position: "absolute",
-    right: 0,
   },
   text: {
     fontSize: 16,

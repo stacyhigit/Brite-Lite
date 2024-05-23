@@ -1,6 +1,6 @@
 {
   "expo": {
-		"name": "Brite-Lite",
+    "name": "Brite-Lite",
     "slug": "Brite-Lite",
     "version": "1.1.0",
     "description": "Create a glowing picture with brightly colored lights",
@@ -42,7 +42,7 @@
           }
         }
       ],
-			[
+      [
         "expo-navigation-bar",
         {
           "position": "absolute",
@@ -52,13 +52,16 @@
         }
       ]
     ],
-		"extra": {
+    "extra": {
       "expo-navigation-bar": {
         "position": "absolute",
         "visibility": "hidden",
         "behavior": "inset-swipe",
         "backgroundColor": "#00000080"
+      },
+      "eas": {
+        "projectId": "738965ad-52ad-4502-bb26-e3341641a968"
       }
-		}
+    }
   }
 }
