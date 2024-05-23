@@ -31,3 +31,7 @@ export const activityIndicatorContainer = {
   justifyContent: "center",
   padding: 10,
 };
+export const activityIndicatorModal = {
+  position: "absolute",
+  right: 0,
+};

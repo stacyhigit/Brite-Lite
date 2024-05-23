@@ -1,4 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
@@ -12,12 +18,14 @@ import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsCompone
 import ModalComponent from "../ui/ModalComponent";
 import Thumbnail from "./Thumbnail";
 import ThumbnailPreset from "./ThumbnailPreset";
+import { activityIndicatorModal } from "../../constants/styles";
 
 export default function OpenScreen({ navigation }) {
   const [allBoards, setAllBoards] = useState([]);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [checkedList, setCheckedList] = useState(() => new Set());
   const [showModal, setShowModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const boardCtx = useContext(BoardContext);
 
@@ -51,25 +59,36 @@ export default function OpenScreen({ navigation }) {
   };
 
   const handleDeleteRequest = async () => {
-    await deleteBoards(checkedList);
-    setCheckedList(new Set());
+    setIsDeleting(true);
     setShowCheckboxes(false);
-    getBoards();
+    setCheckedList(new Set());
+    await deleteBoards(checkedList);
+    await getBoards();
     setShowModal(false);
+    setIsDeleting(false);
     if (checkedList.has(boardCtx.board.id)) {
-      eraseAllBoxes();
+      boardCtx.setBoard((prevBoard) => ({
+        ...prevBoard,
+        id: null,
+        imagePath: "",
+      }));
     }
+  };
+
+  const getDeleteModalTitle = () => {
+    if (isDeleting || checkedList.size === 0) {
+      return "Deleting...";
+    }
+    if (checkedList.size === 1) {
+      return `Delete ${checkedList.size} board?`;
+    }
+    return `Delete ${checkedList.size} boards?`;
   };
 
   async function getBoards() {
     const allBoards = await getAllBoards();
     setAllBoards(allBoards);
   }
-
-  const eraseAllBoxes = () => {
-    boardCtx.setNewBoard();
-    boardCtx.setNewBoxes();
-  };
 
   useEffect(() => {
     getBoards();
@@ -124,11 +143,7 @@ export default function OpenScreen({ navigation }) {
       </ScrollView>
       <ModalComponent
         isVisible={showModal}
-        title={
-          checkedList.size === 1
-            ? `Delete ${checkedList.size} board?`
-            : `Delete ${checkedList.size} boards?`
-        }
+        title={getDeleteModalTitle()}
         closeModal={() => setShowModal(false)}
         button1={{
           text: "Cancel",
@@ -140,7 +155,13 @@ export default function OpenScreen({ navigation }) {
           color: buttonColors.red,
           onPress: handleDeleteRequest,
         }}
-      />
+      >
+        <>
+          {isDeleting && (
+            <ActivityIndicator size="large" style={activityIndicatorModal} />
+          )}
+        </>
+      </ModalComponent>
     </>
   );
 }
