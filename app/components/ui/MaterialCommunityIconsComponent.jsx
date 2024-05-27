@@ -1,24 +1,22 @@
-import { Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import { View } from "react-native";
 import PropTypes from "prop-types";
-import { pressedStyle } from "../../constants/styles";
-
 export default function MaterialCommunityIconsComponent({
   onPress,
   containerStyle,
   icon,
 }) {
   return (
-    <Pressable
-      style={({ pressed }) => [containerStyle, pressed && pressedStyle]}
-      onPress={onPress}
-    >
-      <MaterialCommunityIcons
-        name={icon.name}
-        size={icon.size}
-        color={icon.color}
-      />
-    </Pressable>
+    <View style={containerStyle}>
+      <TouchableNativeFeedback onPress={onPress}>
+        <MaterialCommunityIcons
+          name={icon.name}
+          size={icon.size}
+          color={icon.color}
+        />
+      </TouchableNativeFeedback>
+    </View>
   );
 }
 

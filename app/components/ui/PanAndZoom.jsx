@@ -1,14 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import {
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { boxSize } from "../../constants/values";
@@ -141,13 +137,13 @@ export default function PanAndZoom({
   }));
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <View style={styles.container}>
       <GestureDetector gesture={Gesture.Race(pinch, pan, singleTap)}>
         <Animated.View style={animatedStyle} resizeMethod={"scale"}>
           {children}
         </Animated.View>
       </GestureDetector>
-    </GestureHandlerRootView>
+    </View>
   );
 }
 

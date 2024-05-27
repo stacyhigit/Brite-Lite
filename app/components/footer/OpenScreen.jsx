@@ -6,6 +6,7 @@ import {
   View,
 } from "react-native";
 import { useContext, useEffect, useState } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { board as fishBoard } from "../../../assets/templates/fish";
@@ -95,7 +96,7 @@ export default function OpenScreen({ navigation }) {
   }, [navigation]);
 
   return (
-    <>
+    <GestureHandlerRootView>
       <ScrollView style={styles.container}>
         <View style={[styles.headerContainer, styles.sectionContainer]}>
           {showCheckboxes && (
@@ -162,7 +163,7 @@ export default function OpenScreen({ navigation }) {
           )}
         </>
       </ModalComponent>
-    </>
+    </GestureHandlerRootView>
   );
 }
 

@@ -1,5 +1,6 @@
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { useState } from "react";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { ColorEmpty } from "../../models/color";
@@ -22,15 +23,12 @@ export default function Header({
   return (
     <View style={styles.headerContainer}>
       <View style={styles.colorPickerContainer}>
-        <Pressable
-          style={({ pressed }) => pressed && pressedStyle}
-          onPress={() => setShowModal(true)}
-        >
+        <TouchableNativeFeedback onPress={() => setShowModal(true)}>
           <Image
             source={require("../../../assets/color_circle.png")}
             style={styles.colorPickerImg}
           />
-        </Pressable>
+        </TouchableNativeFeedback>
         <SwatchesCustom
           colors={allColors}
           activeColor={activeColor}

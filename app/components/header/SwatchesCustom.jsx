@@ -1,5 +1,6 @@
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { styles as cpStyles } from "reanimated-color-picker/lib/src/styles";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { circledStyle, pressedStyle, scrollView } from "../../constants/styles";
@@ -26,13 +27,12 @@ export default function SwatchesCustom({
                   color.id == activeColor.id && circledStyle,
                 ]}
               >
-                <Pressable
+                <TouchableNativeFeedback
                   onPress={() => setActiveColor(color)}
-                  style={({ pressed }) => [
+                  style={[
                     styles.swatch,
                     swatchStyle,
                     { backgroundColor: color.hex },
-                    pressed && pressedStyle,
                   ]}
                 />
               </View>

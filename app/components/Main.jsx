@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import * as NavigationBar from "expo-navigation-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { getAllColors, getBoxes, initDatabase } from "../util/database";
@@ -101,7 +102,7 @@ export default function Main({ route }) {
   }
 
   return (
-    <View
+    <GestureHandlerRootView
       style={[styles.outerContainer, { paddingTop: insets.top }]}
       onLayout={onLayoutRootView}
     >
@@ -122,7 +123,7 @@ export default function Main({ route }) {
         )}
       </View>
       <Footer shareRef={shareRef} />
-    </View>
+    </GestureHandlerRootView>
   );
 }
 

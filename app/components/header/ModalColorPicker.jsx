@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Modal, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -16,10 +9,11 @@ import ColorPicker, {
   InputWidget,
   BrightnessSlider,
 } from "reanimated-color-picker";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { basicSwatches, defaultColor } from "../../constants/colors";
-import { pressedStyle, scrollView } from "../../constants/styles";
+import { scrollView } from "../../constants/styles";
 import { deleteColor, insertColor } from "../../util/database";
 import { Color } from "../../models/color";
 
@@ -167,25 +161,18 @@ export default function ModalColorPicker({
                     />
                   </View>
                   <View style={styles.buttonContainer}>
-                    <Pressable
-                      style={({ pressed }) => [
-                        styles.pressable,
-                        pressed && pressedStyle,
-                      ]}
+                    <TouchableNativeFeedback
+                      style={styles.pressable}
                       onPress={() => setShowModal(false)}
                     >
                       <Text style={styles.text}>Close</Text>
-                    </Pressable>
-                    <Pressable
-                      style={({ pressed }) => [
-                        styles.pressable,
-                        ,
-                        pressed && pressedStyle,
-                      ]}
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                      style={styles.pressable}
                       onPress={handleAddColor}
                     >
                       <Text style={styles.text}>Add Color</Text>
-                    </Pressable>
+                    </TouchableNativeFeedback>
                   </View>
                 </View>
               </ColorPicker>
