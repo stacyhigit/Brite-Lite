@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  KeyboardAvoidingView,
   Modal,
   Pressable,
   ScrollView,
@@ -37,6 +36,7 @@ export default function ModalColorPicker({
   setActiveColor,
 }) {
   const pickerRef = useRef(null);
+  const scrollViewRef = useRef(null);
 
   const selectedColor = useSharedValue(activeColor.hex);
 
@@ -99,8 +99,13 @@ export default function ModalColorPicker({
       animationType="slide"
     >
       <Animated.View style={[styles.container, backgroundColorStyle]}>
-        <KeyboardAvoidingView behavior="position">
-          <ScrollView contentOffset={{ x: 0, y: 500 }}>
+        <View>
+          <ScrollView
+            ref={scrollViewRef}
+            onContentSizeChange={() => {
+              scrollViewRef?.current?.scrollToEnd({ animated: true });
+            }}
+          >
             <View style={styles.pickerContainer}>
               <ColorPicker
                 ref={pickerRef}
@@ -111,10 +116,6 @@ export default function ModalColorPicker({
                 onChange={onColorSelect}
                 adaptSpectrum
               >
-                <InputWidget
-                  inputStyle={styles.inputWidgetStyle}
-                  iconColor="#707070"
-                />
                 <Panel3
                   style={styles.panelStyle}
                   verticalChannel="brightness"
@@ -125,6 +126,12 @@ export default function ModalColorPicker({
                   style={styles.sliderStyle}
                   thumbColor="#fff"
                 />
+                <View style={styles.inputWidgetContainer}>
+                  <InputWidget
+                    inputStyle={styles.inputWidgetStyle}
+                    iconColor="#707070"
+                  />
+                </View>
 
                 <View style={styles.previewTxtContainer}>
                   <Text style={[styles.text, styles.textHeader]}>
@@ -190,7 +197,7 @@ export default function ModalColorPicker({
               />
             </View>
           </ScrollView>
-        </KeyboardAvoidingView>
+        </View>
       </Animated.View>
     </Modal>
   );
@@ -249,6 +256,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  inputWidgetContainer: {
+    marginTop: 20,
+  },
   inputWidgetStyle: {
     color: "#fff",
     paddingVertical: 2,
@@ -257,8 +267,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   previewTxtContainer: {
-    paddingTop: 20,
-    marginTop: 20,
+    paddingTop: 8,
+    marginTop: 6,
     borderTopWidth: 1,
     borderColor: "#bebdbe",
   },
@@ -285,6 +295,7 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   textHeader: {
+    marginTop: 6,
     marginBottom: 6,
   },
   swatchesContainer: {
