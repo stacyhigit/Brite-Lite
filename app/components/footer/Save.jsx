@@ -170,6 +170,7 @@ export default function Save({ takeScreenshot }) {
                     handleSave(item);
                   }}
                   style={styles.itemContainer}
+                  disabled={isSaving}
                 >
                   <MaterialCommunityIconsComponent
                     icon={{
