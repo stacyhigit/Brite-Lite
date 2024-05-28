@@ -5,4 +5,5 @@
   <string name="expo_navigation_bar_visibility" translatable="false">hidden</string>
   <string name="expo_navigation_bar_position" translatable="false">absolute</string>
   <string name="expo_navigation_bar_behavior" translatable="false">inset-swipe</string>
+  <string name="expo_runtime_version">1.0.0</string>
 </resources>
