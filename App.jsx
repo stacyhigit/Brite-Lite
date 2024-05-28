@@ -1,8 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Main from "./components/Main";
-import OpenScreen from "./components/footer/OpenScreen";
-import BoardContextProvider from "./store/board-context";
+import Main from "./app/components/Main";
+import OpenScreen from "./app/components/footer/OpenScreen";
+import BoardContextProvider from "./app/store/board-context";
 
 const Stack = createNativeStackNavigator();
 
