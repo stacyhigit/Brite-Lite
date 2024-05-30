@@ -11,18 +11,13 @@ import { boxSize } from "../../constants/values";
 import { useCallback, useContext, useState } from "react";
 import { BoardContext } from "../../store/board-context";
 
-export default function PanAndZoom({
-  // columnCount,
-  // rowCount,
-  setColor,
-  children,
-}) {
+export default function PanAndZoom({ setColor, children }) {
   const boardCtx = useContext(BoardContext);
 
   const [currentBoxes, setCurrentBoxes] = useState([]);
 
-  const boardWidth = boxSize.width * boardCtx.initialSize.columnCount;
-  const boardHeight = boxSize.height * boardCtx.initialSize.rowCount;
+  const boardWidth = boxSize.width * boardCtx.board.columnCount;
+  const boardHeight = boxSize.height * boardCtx.board.rowCount;
   const boardWidthShared = useSharedValue(boardWidth);
   const boardHeightShared = useSharedValue(boardHeight);
 
@@ -42,9 +37,9 @@ export default function PanAndZoom({
       const targetColumn = Math.floor(x / boxSize.width);
       const targetRow = Math.floor(y / boxSize.height);
 
-      return targetRow * boardCtx.initialSize.columnCount + targetColumn;
+      return targetRow * boardCtx.board.columnCount + targetColumn;
     },
-    [boardCtx.initialSize.columnCount]
+    [boardCtx.board.columnCount]
   );
 
   const singleTap = Gesture.Tap()
