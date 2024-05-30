@@ -16,8 +16,8 @@ export default function PanAndZoom({ setColor, children }) {
 
   const [currentBoxes, setCurrentBoxes] = useState([]);
 
-  const boardWidth = boxSize.width * boardCtx.board.columnCount;
-  const boardHeight = boxSize.height * boardCtx.board.rowCount;
+  const boardWidth = boxSize.width * boardCtx.initialSize.columnCount;
+  const boardHeight = boxSize.height * boardCtx.initialSize.rowCount;
   const boardWidthShared = useSharedValue(boardWidth);
   const boardHeightShared = useSharedValue(boardHeight);
 
@@ -37,9 +37,9 @@ export default function PanAndZoom({ setColor, children }) {
       const targetColumn = Math.floor(x / boxSize.width);
       const targetRow = Math.floor(y / boxSize.height);
 
-      return targetRow * boardCtx.board.columnCount + targetColumn;
+      return targetRow * boardCtx.initialSize.columnCount + targetColumn;
     },
-    [boardCtx.board.columnCount]
+    [boardCtx.initialSize.columnCount]
   );
 
   const singleTap = Gesture.Tap()

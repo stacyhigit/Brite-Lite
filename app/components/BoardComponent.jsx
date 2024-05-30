@@ -28,7 +28,7 @@ export default function BoardComponent({ activeColor, shareRef }) {
             {
               flex: boardCtx.board.columnCount,
               width: boardCtx.board.columnCount * boxSize.width,
-              height: boardCtx.board.rowCount * boxSize.height,
+              maxHeight: boardCtx.board.rowCount * boxSize.height,
             },
           ]}
         >
@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
   viewShot: {
     width: "100%",
     height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   boxContainer: {
     flexDirection: "row",
