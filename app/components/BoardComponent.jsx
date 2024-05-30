@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { useWindowDimensions, View } from "react-native";
-import { useContext, useLayoutEffect } from "react";
+import { View } from "react-native";
+import { useContext } from "react";
 import PropTypes from "prop-types";
 
 import BoxComponent from "./BoxComponent";
@@ -9,22 +9,7 @@ import { boxSize } from "../constants/values";
 import ViewShot from "react-native-view-shot";
 import { BoardContext } from "../store/board-context";
 export default function BoardComponent({ activeColor, shareRef }) {
-  const { width, height } = useWindowDimensions();
-  const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
-  const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
-
   const boardCtx = useContext(BoardContext);
-
-  useLayoutEffect(() => {
-    if (columnCount > 0 && !boardCtx.boxes) {
-      boardCtx.setNewBoxes(columnCount, rowCount);
-      boardCtx.setNewBoard(columnCount, rowCount);
-      boardCtx.setInitialSize({
-        columnCount: columnCount,
-        rowCount: rowCount,
-      });
-    }
-  }, []);
 
   const setColor = (index) => {
     boardCtx.setBoxes((prevBoxes) =>
@@ -35,11 +20,7 @@ export default function BoardComponent({ activeColor, shareRef }) {
   };
 
   return (
-    <PanAndZoom
-      columnCount={columnCount}
-      rowCount={rowCount}
-      setColor={setColor}
-    >
+    <PanAndZoom setColor={setColor}>
       <ViewShot ref={shareRef} collapsable={false} style={styles.viewShot}>
         <View
           style={[

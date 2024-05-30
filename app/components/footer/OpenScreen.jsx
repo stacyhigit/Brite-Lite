@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 
 import { board as fishBoard } from "../../../assets/templates/fish";
 import { board as flowersBoard } from "../../../assets/templates/flowers";
-import { deleteBoards, getAllBoards } from "../../util/database";
+import { deleteBoards, getAllBoards, getBoxes } from "../../util/database";
 import { buttonColors } from "../../constants/colors";
 import { BoardContext } from "../../store/board-context";
 
@@ -20,6 +20,7 @@ import ModalComponent from "../ui/ModalComponent";
 import Thumbnail from "./Thumbnail";
 import ThumbnailPreset from "./ThumbnailPreset";
 import { activityIndicatorModal } from "../../constants/styles";
+import ActivityIndicatorComponent from "../ui/ActivityIndicatorComponent";
 
 export default function OpenScreen({ navigation }) {
   const [allBoards, setAllBoards] = useState([]);
@@ -30,16 +31,50 @@ export default function OpenScreen({ navigation }) {
 
   const boardCtx = useContext(BoardContext);
 
+  const handleGetBoxes = async (id) => {
+    const newBoxes = await getBoxes(id);
+    boardCtx.setBoxes(newBoxes);
+    boardCtx.setIsLoading(false);
+  };
+
+  const handleGetLocalBoxes = async (boxes) => {
+    try {
+      if (boxes === "fish") {
+        const newBoxes = await import("../../../assets/templates/fish");
+        boardCtx.setBoxes(newBoxes.boxes);
+      }
+      if (boxes === "flowers") {
+        const newBoxes = await import("../../../assets/templates/flowers");
+        boardCtx.setBoxes(newBoxes.boxes);
+      }
+    } catch (error) {
+      console.log("error handleGetLocalBoxes", error);
+    } finally {
+      boardCtx.setIsLoading(false);
+    }
+  };
+
   const handlePress = async (board, boxes = null) => {
     if (showCheckboxes) {
-      checkedList.has(board.id) ? removeCheck(board.id) : addCheck(board.id);
+      return checkedList.has(board.id)
+        ? removeCheck(board.id)
+        : addCheck(board.id);
     } else {
-      navigation.navigate("Main", { board, boxes });
+      boardCtx.setIsLoading(true);
+      setTimeout(() => {
+        boardCtx.setBoard(board);
+        if (boxes) {
+          handleGetLocalBoxes(boxes);
+        } else {
+          handleGetBoxes(board.id);
+        }
+      }, 0);
+      navigation.navigate("Main");
     }
   };
 
   const addCheck = (id) => {
-    setCheckedList((prev) => new Set(prev).add(id));
+    id && setCheckedList((prev) => new Set(prev).add(id));
   };
 
   const removeCheck = (id) => {
@@ -97,51 +132,57 @@ export default function OpenScreen({ navigation }) {
 
   return (
     <GestureHandlerRootView>
-      <ScrollView style={styles.container}>
-        <View style={[styles.headerContainer, styles.sectionContainer]}>
-          {showCheckboxes && (
-            <Text style={styles.textHeading}>{checkedList.size} Selected</Text>
-          )}
+      {boardCtx.isLoading ? (
+        <ActivityIndicatorComponent />
+      ) : (
+        <ScrollView style={styles.container}>
+          <View style={[styles.headerContainer, styles.sectionContainer]}>
+            {showCheckboxes && (
+              <Text style={styles.textHeading}>
+                {checkedList.size} Selected
+              </Text>
+            )}
+            {allBoards.length > 0 && (
+              <MaterialCommunityIconsComponent
+                icon={{ name: "delete-forever", size: 32, color: "black" }}
+                containerStyle={styles.alignRight}
+                onPress={handleDeletePress}
+              />
+            )}
+          </View>
           {allBoards.length > 0 && (
-            <MaterialCommunityIconsComponent
-              icon={{ name: "delete-forever", size: 32, color: "black" }}
-              containerStyle={styles.alignRight}
-              onPress={handleDeletePress}
-            />
+            <View style={styles.sectionContainer}>
+              <View style={styles.imageContainer}>
+                {allBoards.map((board) => (
+                  <Thumbnail
+                    key={board.id}
+                    board={board}
+                    handlePress={() => handlePress(board)}
+                    showCheckboxes={showCheckboxes}
+                    setShowCheckboxes={setShowCheckboxes}
+                    addCheck={addCheck}
+                    removeCheck={removeCheck}
+                    checkedList={checkedList}
+                  />
+                ))}
+              </View>
+            </View>
           )}
-        </View>
-        {allBoards.length > 0 && (
           <View style={styles.sectionContainer}>
+            <Text style={styles.text}>Presets</Text>
             <View style={styles.imageContainer}>
-              {allBoards.map((board) => (
-                <Thumbnail
-                  key={board.id}
-                  board={board}
-                  handlePress={() => handlePress(board)}
-                  showCheckboxes={showCheckboxes}
-                  setShowCheckboxes={setShowCheckboxes}
-                  addCheck={addCheck}
-                  removeCheck={removeCheck}
-                  checkedList={checkedList}
-                />
-              ))}
+              <ThumbnailPreset
+                board={fishBoard}
+                handlePress={() => handlePress(fishBoard, "fish")}
+              />
+              <ThumbnailPreset
+                board={flowersBoard}
+                handlePress={() => handlePress(flowersBoard, "flowers")}
+              />
             </View>
           </View>
-        )}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.text}>Presets</Text>
-          <View style={styles.imageContainer}>
-            <ThumbnailPreset
-              board={fishBoard}
-              handlePress={() => handlePress(fishBoard, "fish")}
-            />
-            <ThumbnailPreset
-              board={flowersBoard}
-              handlePress={() => handlePress(flowersBoard, "flowers")}
-            />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
       <ModalComponent
         isVisible={showModal}
         title={getDeleteModalTitle()}
@@ -174,6 +215,7 @@ OpenScreen.propTypes = {
 const styles = StyleSheet.create({
   container: {
     padding: 12,
+    backgroundColor: "white",
   },
   text: {
     fontSize: 18,

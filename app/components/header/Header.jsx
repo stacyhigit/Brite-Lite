@@ -4,7 +4,7 @@ import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { ColorEmpty } from "../../models/color";
-import { circledStyle, pressedStyle } from "../../constants/styles";
+import { circledStyle } from "../../constants/styles";
 import { basicSwatches } from "../../constants/colors";
 
 import ModalColorPicker from "./ModalColorPicker";

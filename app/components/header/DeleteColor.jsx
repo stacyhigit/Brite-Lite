@@ -45,13 +45,15 @@ export default function DeleteColor({
       )}
     </>
   );
-  DeleteColor.propTypes = {
-    activeColor: PropTypes.object,
-    showDelete: PropTypes.bool,
-    setShowDelete: PropTypes.func,
-    handleDeleteColor: PropTypes.func,
-  };
 }
+
+DeleteColor.propTypes = {
+  activeColor: PropTypes.object,
+  showDelete: PropTypes.bool,
+  setShowDelete: PropTypes.func,
+  handleDeleteColor: PropTypes.func,
+};
+
 const styles = StyleSheet.create({
   deleteContainer: {
     position: "absolute",
