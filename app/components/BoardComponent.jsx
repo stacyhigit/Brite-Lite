@@ -56,8 +56,6 @@ const styles = StyleSheet.create({
   viewShot: {
     width: "100%",
     height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
   },
   boxContainer: {
     flexDirection: "row",
