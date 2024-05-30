@@ -46,7 +46,7 @@ export default function ModalColorPicker({
     if (typeof activeColor.id !== "number") {
       setShowDelete(false);
     }
-  }, [activeColor]);
+  }, [activeColor, selectedColor]);
 
   const onColorSelect = (color) => {
     "worklet";

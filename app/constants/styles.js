@@ -25,14 +25,7 @@ export const thumbnail = {
   resizeMode: "contain",
   backgroundColor: "#ccc",
 };
-export const activityIndicatorContainer = {
-  flex: 1,
-  backgroundColor: "black",
-  justifyContent: "center",
-  padding: 10,
-};
 export const activityIndicatorModal = {
-  position: "absolute",
   position: "absolute",
   left: 0,
   right: 0,

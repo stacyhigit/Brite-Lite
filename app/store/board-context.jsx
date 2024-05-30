@@ -1,30 +1,37 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Board, BoardEmpty } from "../models/board";
+import { BoardEmpty } from "../models/board";
 import { BoxEmpty } from "../models/box";
+import { useWindowDimensions } from "react-native";
+import { boxSize } from "../constants/values";
 
 export const BoardContext = createContext();
 
 export default function BoardContextProvider({ children }) {
-  const [boxes, setBoxes] = useState();
-  const [board, setBoard] = useState(new Board());
+  const { width, height } = useWindowDimensions();
+  const columnCount = Math.min(Math.floor(width / boxSize.width), 33);
+  const rowCount = Math.min(Math.floor(height / boxSize.height), 48);
+
+  const getBoxesList = (columnCount, rowCount) => {
+    return Array.from(
+      { length: columnCount * rowCount },
+      (_, count) => new BoxEmpty(count)
+    );
+  };
+  const initialBoxes = getBoxesList(columnCount, rowCount);
+  const initialBoard = new BoardEmpty(columnCount, rowCount);
+
+  const [boxes, setBoxes] = useState(initialBoxes);
+  const [board, setBoard] = useState(initialBoard);
   const [isLoading, setIsLoading] = useState(false);
-  const [initialSize, setInitialSize] = useState({
-    columnCount: 0,
-    rowCount: 0,
-  });
+  const [initialSize, setInitialSize] = useState({ columnCount, rowCount });
 
   const setNewBoxes = (
     columnCount = initialSize.columnCount,
     rowCount = initialSize.rowCount
   ) => {
-    setBoxes(
-      Array.from(
-        { length: columnCount * rowCount },
-        (_, count) => new BoxEmpty(count)
-      )
-    );
+    setBoxes(getBoxesList(columnCount, rowCount));
   };
 
   const setNewBoard = (
