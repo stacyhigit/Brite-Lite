@@ -1,5 +1,6 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { boxColors } from "../../constants/colors";
+
 export default function ActivityIndicatorComponent() {
   return (
     <View style={styles.activityIndicatorContainer}>
