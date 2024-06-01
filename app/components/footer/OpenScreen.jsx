@@ -1,10 +1,4 @@
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
@@ -19,7 +13,6 @@ import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsCompone
 import ModalComponent from "../ui/ModalComponent";
 import Thumbnail from "./Thumbnail";
 import ThumbnailPreset from "./ThumbnailPreset";
-import { activityIndicatorModal } from "../../constants/styles";
 import ActivityIndicatorComponent from "../ui/ActivityIndicatorComponent";
 
 export default function OpenScreen({ navigation }) {
@@ -185,6 +178,7 @@ export default function OpenScreen({ navigation }) {
       )}
       <ModalComponent
         isVisible={showModal}
+        showActivityIndicator={isDeleting}
         title={getDeleteModalTitle()}
         closeModal={() => setShowModal(false)}
         button1={{
@@ -197,13 +191,7 @@ export default function OpenScreen({ navigation }) {
           color: buttonColors.red,
           onPress: handleDeleteRequest,
         }}
-      >
-        <>
-          {isDeleting && (
-            <ActivityIndicator size="large" style={activityIndicatorModal} />
-          )}
-        </>
-      </ModalComponent>
+      ></ModalComponent>
     </GestureHandlerRootView>
   );
 }

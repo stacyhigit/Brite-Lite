@@ -1,10 +1,19 @@
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
-import ButtonComponent from "./ButtonComponent";
 
+import ButtonComponent from "./ButtonComponent";
+import { boxColors } from "../../constants/colors";
 export default function ModalComponent({
   isVisible,
+  showActivityIndicator = false,
   title,
   body,
   closeModal,
@@ -22,6 +31,13 @@ export default function ModalComponent({
       <GestureHandlerRootView style={styles.root}>
         <Pressable style={styles.container} onPress={closeModal}>
           <Pressable style={styles.modalContainer} onPress={undefined}>
+            {showActivityIndicator && (
+              <ActivityIndicator
+                size="large"
+                color={boxColors.ett_blue}
+                style={styles.loading}
+              />
+            )}
             <View style={styles.innerContainer}>
               <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{title}</Text>
@@ -56,6 +72,7 @@ export default function ModalComponent({
 
 ModalComponent.propTypes = {
   isVisible: PropTypes.bool,
+  showActivityIndicator: PropTypes.bool,
   title: PropTypes.string,
   body: PropTypes.string,
   closeModal: PropTypes.func,
@@ -106,5 +123,15 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     gap: 10,
+  },
+  loading: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00000080",
   },
 });

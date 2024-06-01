@@ -149,37 +149,33 @@ export default function Save({ takeScreenshot }) {
       />
       <ModalComponent
         isVisible={showModal}
+        showActivityIndicator={isSaving}
         title={"Save"}
         closeModal={() => setShowModal(false)}
       >
-        <>
-          {isSaving && (
-            <ActivityIndicator size="large" style={activityIndicatorModal} />
-          )}
-          <View>
-            {saveList.map((item) => {
-              return (
-                <Pressable
-                  key={item}
-                  onPress={() => {
-                    handleSave(item);
+        <View>
+          {saveList.map((item) => {
+            return (
+              <Pressable
+                key={item}
+                onPress={() => {
+                  handleSave(item);
+                }}
+                style={styles.itemContainer}
+                disabled={isSaving}
+              >
+                <MaterialCommunityIconsComponent
+                  icon={{
+                    name: "tray-arrow-down",
+                    size: 28,
+                    color: "#484848",
                   }}
-                  style={styles.itemContainer}
-                  disabled={isSaving}
-                >
-                  <MaterialCommunityIconsComponent
-                    icon={{
-                      name: "tray-arrow-down",
-                      size: 28,
-                      color: "#484848",
-                    }}
-                  />
-                  <Text style={styles.text}>{item}</Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        </>
+                />
+                <Text style={styles.text}>{item}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
       </ModalComponent>
       <ModalComponent
         isVisible={showSettingsModal}
