@@ -1,4 +1,5 @@
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 import ButtonComponent from "./ButtonComponent";
 
@@ -16,37 +17,39 @@ export default function ModalComponent({
       visible={isVisible}
       transparent={true}
       animationType="slide"
-      onRequestClose={() => closeModal}
+      onRequestClose={() => closeModal()}
     >
-      <Pressable style={styles.container} onPress={closeModal}>
-        <Pressable style={styles.modalContainer} onPress={undefined}>
-          <View style={styles.innerContainer}>
-            <View style={styles.textContainer}>
-              <Text style={styles.textTitle}>{title}</Text>
-              {body && <Text style={styles.textBody}>{body}</Text>}
-              {children}
+      <GestureHandlerRootView style={styles.root}>
+        <Pressable style={styles.container} onPress={closeModal}>
+          <Pressable style={styles.modalContainer} onPress={undefined}>
+            <View style={styles.innerContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textTitle}>{title}</Text>
+                {body && <Text style={styles.textBody}>{body}</Text>}
+                {children}
+              </View>
+              <View style={styles.buttonContainer}>
+                {button1 && (
+                  <ButtonComponent
+                    onPress={button1.onPress}
+                    color={button1.color}
+                  >
+                    {button1.text}
+                  </ButtonComponent>
+                )}
+                {button2 && (
+                  <ButtonComponent
+                    onPress={button2.onPress}
+                    color={button2.color}
+                  >
+                    {button2.text}
+                  </ButtonComponent>
+                )}
+              </View>
             </View>
-            <View style={styles.buttonContainer}>
-              {button1 && (
-                <ButtonComponent
-                  onPress={button1.onPress}
-                  color={button1.color}
-                >
-                  {button1.text}
-                </ButtonComponent>
-              )}
-              {button2 && (
-                <ButtonComponent
-                  onPress={button2.onPress}
-                  color={button2.color}
-                >
-                  {button2.text}
-                </ButtonComponent>
-              )}
-            </View>
-          </View>
+          </Pressable>
         </Pressable>
-      </Pressable>
+      </GestureHandlerRootView>
     </Modal>
   );
 }
@@ -62,6 +65,9 @@ ModalComponent.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: "#00000080",
