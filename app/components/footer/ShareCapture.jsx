@@ -1,9 +1,9 @@
 import Share from "react-native-share";
-import * as Burnt from "burnt";
 import PropTypes from "prop-types";
 
 import { playStoreUrl } from "../../constants/values";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
+import { showToast } from "../../util/shared";
 
 export default function ShareCapture({ takeScreenshot }) {
   const containerStyle = {
@@ -11,13 +11,6 @@ export default function ShareCapture({ takeScreenshot }) {
     alignItems: "center",
     paddingTop: 3,
     width: 32,
-  };
-
-  const showSaveToast = (title) => {
-    Burnt.toast({
-      title: title,
-      preset: "done",
-    });
   };
 
   const handleShare = async () => {
@@ -35,10 +28,10 @@ export default function ShareCapture({ takeScreenshot }) {
           url: screenshotURI,
         });
       } else {
-        showSaveToast("An error occurred sharing");
+        showToast("error", "An error occurred sharing");
       }
     } catch (error) {
-      console.log(error);
+      console.log("error handleShare:", error);
     }
   };
 

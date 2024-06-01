@@ -11,7 +11,6 @@ import * as FileSystem from "expo-file-system";
 import { useContext, useState } from "react";
 
 import * as MediaLibrary from "expo-media-library";
-import * as Burnt from "burnt";
 import PropTypes from "prop-types";
 
 import ModalComponent from "../ui/ModalComponent";
@@ -23,6 +22,7 @@ import { saveBoard, updateBoardImagePath } from "../../util/database";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
 import { BoardContext } from "../../store/board-context";
+import { showToast } from "../../util/shared";
 
 export default function Save({ takeScreenshot }) {
   const [showModal, setShowModal] = useState(false);
@@ -33,13 +33,6 @@ export default function Save({ takeScreenshot }) {
 
   const saveList = ["Image file", "Brite-Lite file"];
   const docDir = FileSystem.documentDirectory;
-
-  const showSaveToast = (title) => {
-    Burnt.toast({
-      title: title,
-      preset: "done",
-    });
-  };
 
   const handleScreenshot = async (newBoardId, board) => {
     const screenshotURI = await takeScreenshot({
@@ -85,9 +78,9 @@ export default function Save({ takeScreenshot }) {
       });
       if (screenshotURI) {
         await MediaLibrary.saveToLibraryAsync(screenshotURI);
-        showSaveToast("Saved to Gallery");
+        showToast("success", "Saved to Gallery");
       } else {
-        showSaveToast("An error occurred saving file");
+        showToast("error", "An error occurred saving file");
       }
     } catch (error) {
       console.log("error saveImage", error);
@@ -110,9 +103,11 @@ export default function Save({ takeScreenshot }) {
         await handleScreenshot(newBoardId, boardCtx.board);
         setIsSaving(false);
         setShowModal(false);
-        showSaveToast("Saved successfully");
+        showToast("success", "Saved successfully");
       } else {
-        showSaveToast("An error occurred saving file");
+        setIsSaving(false);
+        setShowModal(false);
+        showToast("error", "An error occurred saving file");
       }
       return;
     }
