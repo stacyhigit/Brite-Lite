@@ -27,7 +27,7 @@ export default function DeleteColor({
                 styles.pressable,
                 pressed && pressedStyle,
               ]}
-              onPress={() => setShowDelete(false)}
+              onPressOut={() => setShowDelete(false)}
             >
               <Text style={styles.text}>Cancel</Text>
             </Pressable>
@@ -36,7 +36,7 @@ export default function DeleteColor({
                 styles.pressable,
                 pressed && pressedStyle,
               ]}
-              onPress={handleDeleteColor}
+              onPressOut={handleDeleteColor}
             >
               <Text style={styles.text}>Delete</Text>
             </Pressable>
@@ -46,14 +46,12 @@ export default function DeleteColor({
     </>
   );
 }
-
 DeleteColor.propTypes = {
   activeColor: PropTypes.object,
   showDelete: PropTypes.bool,
   setShowDelete: PropTypes.func,
   handleDeleteColor: PropTypes.func,
 };
-
 const styles = StyleSheet.create({
   deleteContainer: {
     position: "absolute",
