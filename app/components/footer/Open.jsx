@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 
-import { containerFooter } from "../../constants/styles";
+import { globalStyles } from "../../constants/styles";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 
 export default function Open() {
@@ -9,7 +9,7 @@ export default function Open() {
   return (
     <MaterialCommunityIconsComponent
       onPress={() => navigation.navigate("OpenScreen")}
-      containerStyle={containerFooter}
+      containerStyle={globalStyles.containerFooterIcon}
       icon={{ name: "folder-open-outline", size: 28, color: "white" }}
     />
   );

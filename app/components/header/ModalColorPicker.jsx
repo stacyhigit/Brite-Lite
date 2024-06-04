@@ -13,7 +13,7 @@ import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { basicSwatches, defaultColor } from "../../constants/colors";
-import { scrollView } from "../../constants/styles";
+import { globalStyles } from "../../constants/styles";
 import { deleteColor, insertColor } from "../../util/database";
 import { Color } from "../../models/color";
 
@@ -132,7 +132,10 @@ export default function ModalColorPicker({
                     Basic Colors
                   </Text>
                   <View style={styles.swatchesContainer}>
-                    <ScrollView horizontal={true} style={scrollView}>
+                    <ScrollView
+                      horizontal={true}
+                      style={globalStyles.scrollView}
+                    >
                       <SwatchesCustom
                         colors={basicSwatches}
                         activeColor={activeColor}

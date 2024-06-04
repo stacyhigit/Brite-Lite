@@ -1,16 +1,15 @@
 import { Image, Pressable } from "react-native";
 import PropTypes from "prop-types";
 
-import { thumbnailWidth } from "../../constants/values";
-import { thumbnail } from "../../constants/styles";
-
-export default function ThumbnailPreset({ board, handlePress }) {
+import { thumbnailMargin, thumbnailWidth } from "../../../constants/values";
+import { globalStyles } from "../../../constants/styles";
+export default function ThumbnailPreset({ board, handlePress, image }) {
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable onPress={handlePress} style={{ margin: thumbnailMargin / 2 }}>
       <Image
-        source={board.presetImagePath}
+        source={{ uri: image }}
         style={[
-          thumbnail,
+          globalStyles.thumbnail,
           {
             width: thumbnailWidth,
             height: (board.rowCount * thumbnailWidth) / board.columnCount,
@@ -24,4 +23,5 @@ export default function ThumbnailPreset({ board, handlePress }) {
 ThumbnailPreset.propTypes = {
   board: PropTypes.object,
   handlePress: PropTypes.func,
+  image: PropTypes.string,
 };

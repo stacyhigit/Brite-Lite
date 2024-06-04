@@ -4,15 +4,9 @@ import PropTypes from "prop-types";
 import { playStoreUrl } from "../../constants/values";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { showToast } from "../../util/shared";
+import { globalStyles } from "../../constants/styles";
 
 export default function ShareCapture({ takeScreenshot }) {
-  const containerStyle = {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 3,
-    width: 32,
-  };
-
   const handleShare = async () => {
     try {
       const screenshotURI = await takeScreenshot({
@@ -26,19 +20,21 @@ export default function ShareCapture({ takeScreenshot }) {
           message:
             "Here's a picture I created with Brite-Lite\n" + playStoreUrl,
           url: screenshotURI,
+          failOnCancel: false,
         });
       } else {
         showToast("error", "An error occurred sharing");
       }
     } catch (error) {
       console.log("error handleShare:", error);
+      showToast("error", "An error occurred sharing");
     }
   };
 
   return (
     <MaterialCommunityIconsComponent
       onPress={handleShare}
-      containerStyle={containerStyle}
+      containerStyle={globalStyles.containerFooterIcon}
       icon={{ name: "share-variant", size: 28, color: "white" }}
     />
   );

@@ -5,7 +5,7 @@ import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import Main from "./app/components/Main";
-import OpenScreen from "./app/components/footer/OpenScreen";
+import OpenScreen from "./app/components/footer/openScreen/OpenScreen";
 import BoardContextProvider from "./app/store/board-context";
 import { buttonColors } from "./app/constants/colors";
 
@@ -62,7 +62,10 @@ export default function App() {
           <Stack.Screen
             name="OpenScreen"
             component={OpenScreen}
-            options={{ title: "Open" }}
+            options={{
+              title: "Open",
+              contentStyle: { backgroundColor: "white" },
+            }}
           />
         </Stack.Navigator>
         <Toast config={toastConfig} />

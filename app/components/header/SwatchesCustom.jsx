@@ -3,7 +3,7 @@ import { styles as cpStyles } from "reanimated-color-picker/lib/src/styles";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
-import { circledStyle, pressedStyle, scrollView } from "../../constants/styles";
+import { globalStyles } from "../../constants/styles";
 
 export default function SwatchesCustom({
   colors = [],
@@ -13,7 +13,7 @@ export default function SwatchesCustom({
   setActiveColor,
 }) {
   return (
-    <ScrollView horizontal={true} style={scrollView}>
+    <ScrollView horizontal={true} style={globalStyles.scrollView}>
       <View
         style={[cpStyles.swatchesContainer, styles.swatchesContainer, style]}
       >
@@ -24,7 +24,7 @@ export default function SwatchesCustom({
                 key={color.hex + color.id}
                 style={[
                   styles.circleContainer,
-                  color.id == activeColor.id && circledStyle,
+                  color.id === activeColor.id && globalStyles.circledStyle,
                 ]}
               >
                 <TouchableNativeFeedback

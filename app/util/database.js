@@ -86,20 +86,20 @@ export async function deleteColor(id) {
   }
 }
 
-export async function saveBoard(boxes, board) {
+export async function saveBoard(imagePath, boxes, board) {
   if (board.id) {
     await deleteBoard(board.id);
   }
-  return insertBoard(boxes, board);
+  return insertBoard(imagePath, boxes, board);
 }
 
-async function insertBoard(boxes, board) {
+async function insertBoard(imagePath, boxes, board) {
   const db = await openDatabase();
   const insertBoxes = await db.prepareAsync(boxesInsertStatement);
   try {
     let resBoard = await db.runAsync(
       "INSERT INTO boards (imagePath, rowCount, columnCount) VALUES (?,?,?)",
-      board.imagePath,
+      imagePath,
       board.rowCount,
       board.columnCount
     );
@@ -120,21 +120,6 @@ async function insertBoard(boxes, board) {
     } catch (error) {
       console.log("error insertBoard", error);
     }
-    db.closeAsync();
-  }
-}
-
-export async function updateBoardImagePath(id, path) {
-  const db = await openDatabase();
-  try {
-    return await db.runAsync(
-      "UPDATE boards SET imagePath = ? WHERE id = ?",
-      path,
-      id
-    );
-  } catch (error) {
-    console.log("error updateBoardImagePath", error);
-  } finally {
     db.closeAsync();
   }
 }
