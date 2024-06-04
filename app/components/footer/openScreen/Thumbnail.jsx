@@ -56,5 +56,4 @@ Thumbnail.propTypes = {
   setShowCheckboxes: PropTypes.func,
   addCheck: PropTypes.func,
   checkedList: PropTypes.object,
-  imageMargin: PropTypes.number,
 };

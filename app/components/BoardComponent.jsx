@@ -43,11 +43,6 @@ export default function BoardComponent({ activeColor, shareRef }) {
 }
 
 BoardComponent.propTypes = {
-  boxes: PropTypes.array,
-  setBoxes: PropTypes.func,
-  board: PropTypes.object,
-  setBoard: PropTypes.func,
-  setInitialSize: PropTypes.func,
   activeColor: PropTypes.object,
   shareRef: PropTypes.object,
 };

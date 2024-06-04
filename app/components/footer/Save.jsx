@@ -193,9 +193,6 @@ export default function Save({ takeScreenshot }) {
 }
 
 Save.propTypes = {
-  boxes: PropTypes.array,
-  board: PropTypes.object,
-  setBoard: PropTypes.func,
   takeScreenshot: PropTypes.func,
 };
 

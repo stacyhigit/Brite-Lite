@@ -30,10 +30,5 @@ export default function Footer({ shareRef }) {
 }
 
 Footer.propTypes = {
-  boxes: PropTypes.array,
-  setBoxes: PropTypes.func,
-  board: PropTypes.object,
-  setBoard: PropTypes.func,
-  eraseAllBoxes: PropTypes.func,
   shareRef: PropTypes.object,
 };

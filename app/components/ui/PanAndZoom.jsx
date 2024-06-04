@@ -160,8 +160,6 @@ export default function PanAndZoom({ setColor, children }) {
 
 PanAndZoom.propTypes = {
   children: PropTypes.object,
-  columnCount: PropTypes.number,
-  rowCount: PropTypes.number,
   setColor: PropTypes.func,
 };
 
