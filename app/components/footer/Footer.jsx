@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { captureRef } from "react-native-view-shot";
 
 import PropTypes from "prop-types";
@@ -7,6 +7,7 @@ import ShareCapture from "./ShareCapture";
 import Save from "./Save";
 import EraseBoard from "./EraseBoard";
 import Open from "./Open";
+import { globalStyles } from "../../constants/styles";
 
 export default function Footer({ shareRef }) {
   const takeScreenshot = async (options) => {
@@ -19,7 +20,7 @@ export default function Footer({ shareRef }) {
   };
 
   return (
-    <View style={styles.footerContainer}>
+    <View style={globalStyles.footerContainer}>
       <EraseBoard />
       <Save takeScreenshot={takeScreenshot} />
       <Open />
@@ -36,15 +37,3 @@ Footer.propTypes = {
   eraseAllBoxes: PropTypes.func,
   shareRef: PropTypes.object,
 };
-
-const styles = StyleSheet.create({
-  footerContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    paddingHorizontal: 36,
-    paddingVertical: 6,
-    backgroundColor: "black",
-  },
-});

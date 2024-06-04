@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import ModalComponent from "../ui/ModalComponent";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
-import { containerFooter } from "../../constants/styles";
+import { globalStyles } from "../../constants/styles";
 import { BoardContext } from "../../store/board-context";
 
 export default function EraseBoard() {
@@ -21,7 +21,7 @@ export default function EraseBoard() {
     <>
       <MaterialCommunityIconsComponent
         onPress={() => setShowModal(true)}
-        containerStyle={containerFooter}
+        containerStyle={globalStyles.containerFooterIcon}
         icon={{ name: "delete-forever", size: 28, color: "white" }}
       />
       <ModalComponent

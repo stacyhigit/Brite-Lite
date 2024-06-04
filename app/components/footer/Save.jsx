@@ -1,5 +1,4 @@
 import {
-  ActivityIndicator,
   Linking,
   Platform,
   Pressable,
@@ -14,15 +13,12 @@ import * as MediaLibrary from "expo-media-library";
 import PropTypes from "prop-types";
 
 import ModalComponent from "../ui/ModalComponent";
-import {
-  activityIndicatorModal,
-  containerFooter,
-} from "../../constants/styles";
-import { saveBoard, updateBoardImagePath } from "../../util/database";
+import { globalStyles } from "../../constants/styles";
+import { saveBoard } from "../../util/database";
 import MaterialCommunityIconsComponent from "../ui/MaterialCommunityIconsComponent";
 import { buttonColors } from "../../constants/colors";
 import { BoardContext } from "../../store/board-context";
-import { showToast } from "../../util/shared";
+import { deleteImage, showToast } from "../../util/shared";
 
 export default function Save({ takeScreenshot }) {
   const [showModal, setShowModal] = useState(false);
@@ -32,25 +28,6 @@ export default function Save({ takeScreenshot }) {
   const boardCtx = useContext(BoardContext);
 
   const saveList = ["Image file", "Brite-Lite file"];
-  const docDir = FileSystem.documentDirectory;
-
-  const handleScreenshot = async (newBoardId, board) => {
-    const screenshotURI = await takeScreenshot({
-      format: "jpg",
-      width: 100,
-      quality: 0.5,
-      fileName: "Brite-Lite-",
-    });
-    const newImagePath = docDir + newBoardId + Date.now() + ".jpg";
-    moveImage(screenshotURI, newImagePath);
-    deleteImage(board.imagePath);
-    boardCtx.setBoard((prevboard) => ({
-      ...prevboard,
-      id: newBoardId,
-      imagePath: newImagePath,
-    }));
-    return await updateBoardImagePath(newBoardId, newImagePath);
-  };
 
   const moveImage = async (from, to) => {
     const res = await FileSystem.moveAsync({
@@ -58,15 +35,6 @@ export default function Save({ takeScreenshot }) {
       to: to,
     });
     return res;
-  };
-
-  const deleteImage = async (fileName) => {
-    if (fileName.length) {
-      return await FileSystem.deleteAsync(fileName, {
-        idempotent: true,
-      });
-    }
-    return;
   };
 
   const saveImage = async () => {
@@ -98,12 +66,33 @@ export default function Save({ takeScreenshot }) {
   const handleSave = async (item) => {
     setIsSaving(true);
     if (item === "Brite-Lite file") {
-      const newBoardId = await saveBoard(boardCtx.boxes, boardCtx.board);
+      const prevImagePath = boardCtx.board.imagePath;
+      const screenshotURI = await takeScreenshot({
+        format: "jpg",
+        width: 100,
+        quality: 0.5,
+        fileName: "Brite-Lite-",
+      });
+      const docDir = FileSystem.documentDirectory;
+      const newImagePath = docDir + "thumbnail" + Date.now() + ".jpg";
+      moveImage(screenshotURI, newImagePath);
+      const newBoardId = await saveBoard(
+        newImagePath,
+        boardCtx.boxes,
+        boardCtx.board
+      );
       if (newBoardId) {
-        await handleScreenshot(newBoardId, boardCtx.board);
         setIsSaving(false);
         setShowModal(false);
         showToast("success", "Saved successfully");
+        if (prevImagePath) {
+          await deleteImage(prevImagePath);
+        }
+        boardCtx.setBoard((prevboard) => ({
+          ...prevboard,
+          id: newBoardId,
+          imagePath: newImagePath,
+        }));
       } else {
         setIsSaving(false);
         setShowModal(false);
@@ -144,7 +133,7 @@ export default function Save({ takeScreenshot }) {
     <>
       <MaterialCommunityIconsComponent
         onPress={() => setShowModal(true)}
-        containerStyle={containerFooter}
+        containerStyle={globalStyles.containerFooterIcon}
         icon={{ name: "tray-arrow-down", size: 28, color: "white" }}
       />
       <ModalComponent

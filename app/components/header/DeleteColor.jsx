@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 
-import { pressedStyle } from "../../constants/styles";
+import { globalStyles } from "../../constants/styles";
 
 export default function DeleteColor({
   activeColor,
@@ -25,7 +25,7 @@ export default function DeleteColor({
             <Pressable
               style={({ pressed }) => [
                 styles.pressable,
-                pressed && pressedStyle,
+                pressed && globalStyles.pressedStyle,
               ]}
               onPressOut={() => setShowDelete(false)}
             >
@@ -34,7 +34,7 @@ export default function DeleteColor({
             <Pressable
               style={({ pressed }) => [
                 styles.pressable,
-                pressed && pressedStyle,
+                pressed && globalStyles.pressedStyle,
               ]}
               onPressOut={handleDeleteColor}
             >

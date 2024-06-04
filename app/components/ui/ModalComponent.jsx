@@ -31,13 +31,6 @@ export default function ModalComponent({
       <GestureHandlerRootView style={styles.root}>
         <Pressable style={styles.container} onPress={closeModal}>
           <Pressable style={styles.modalContainer} onPress={undefined}>
-            {showActivityIndicator && (
-              <ActivityIndicator
-                size="large"
-                color={boxColors.ett_blue}
-                style={styles.loading}
-              />
-            )}
             <View style={styles.innerContainer}>
               <View style={styles.textContainer}>
                 <Text style={styles.textTitle}>{title}</Text>
@@ -63,6 +56,13 @@ export default function ModalComponent({
                 )}
               </View>
             </View>
+            {showActivityIndicator && (
+              <ActivityIndicator
+                size="large"
+                color={boxColors.ett_blue}
+                style={styles.loading}
+              />
+            )}
           </Pressable>
         </Pressable>
       </GestureHandlerRootView>

@@ -4,7 +4,7 @@ import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import PropTypes from "prop-types";
 
 import { ColorEmpty } from "../../models/color";
-import { circledStyle } from "../../constants/styles";
+import { globalStyles } from "../../constants/styles";
 import { basicSwatches } from "../../constants/colors";
 
 import ModalColorPicker from "./ModalColorPicker";
@@ -34,7 +34,7 @@ export default function Header({
           activeColor={activeColor}
           setActiveColor={setActiveColor}
         />
-        <View style={activeColor.id === "empty" && circledStyle}>
+        <View style={activeColor.id === "empty" && globalStyles.circledStyle}>
           <MaterialCommunityIconsComponent
             icon={{ name: "eraser", size: 28, color: "white" }}
             onPress={() => setActiveColor(new ColorEmpty())}
