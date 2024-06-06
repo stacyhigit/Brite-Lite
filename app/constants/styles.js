@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
-  ressedStyle: {
+  pressedStyle: {
     opacity: 0.7,
   },
   circledStyle: {
