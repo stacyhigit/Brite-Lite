@@ -31,7 +31,7 @@ import OpenScreenHeader from "./OpenScreenHeader";
 import { deleteImage } from "../../../util/shared";
 import DeleteModal from "./DeleteModal";
 import { thumbnailWidth, thumbnailMargin } from "../../../constants/values";
-import NewBoard from "./NewBoard";
+import { globalStyles } from "../../../constants/styles";
 
 export default function OpenScreen({ navigation }) {
   const { width } = useWindowDimensions();
@@ -177,7 +177,10 @@ export default function OpenScreen({ navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Pressable onPressOut={handleDeletePress}>
+        <Pressable
+          onPressOut={handleDeletePress}
+          style={({ pressed }) => pressed && globalStyles.pressedStyle}
+        >
           <MaterialCommunityIcons
             name="delete-forever"
             size={32}
@@ -193,39 +196,39 @@ export default function OpenScreen({ navigation }) {
   }, [navigation]);
 
   return (
-    <GestureHandlerRootView>
-      {boardCtx.isLoading ? (
-        <ActivityIndicatorComponent />
-      ) : (
-        <>
-          {showCheckboxes && (
-            <OpenScreenHeader
-              setShowCheckboxes={setShowCheckboxes}
-              setCheckedList={setCheckedList}
-              checkedListSize={checkedList.size}
-            />
-          )}
-          <View style={{ marginHorizontal: thumbnailMargin }}>
-            <FlatList
-              data={allBoards}
-              keyExtractor={(item) => item.id}
-              renderItem={renderItem}
-              numColumns={columnCount}
-              persistentScrollbar={true}
-              ListFooterComponent={Presets}
-            />
-          </View>
-        </>
-      )}
-      <NewBoard />
-      <DeleteModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        checkedList={checkedList}
-        isDeleting={isDeleting}
-        handleDeleteRequest={handleDeleteRequest}
-      />
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <GestureHandlerRootView>
+        {boardCtx.isLoading ? (
+          <ActivityIndicatorComponent />
+        ) : (
+          <>
+            {showCheckboxes && (
+              <OpenScreenHeader
+                setShowCheckboxes={setShowCheckboxes}
+                setCheckedList={setCheckedList}
+                checkedListSize={checkedList.size}
+              />
+            )}
+            <View style={{ marginHorizontal: thumbnailMargin }}>
+              <FlatList
+                data={allBoards}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItem}
+                numColumns={columnCount}
+                ListFooterComponent={Presets}
+              />
+            </View>
+          </>
+        )}
+        <DeleteModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          checkedList={checkedList}
+          isDeleting={isDeleting}
+          handleDeleteRequest={handleDeleteRequest}
+        />
+      </GestureHandlerRootView>
+    </View>
   );
 }
 
@@ -234,6 +237,9 @@ OpenScreen.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   text: {
     fontSize: 18,
     marginBottom: 6,
