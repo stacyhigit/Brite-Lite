@@ -49,7 +49,7 @@
       [
         "expo-navigation-bar",
         {
-          "position": "relative",
+          "position": "absolute",
           "visibility": "hidden",
           "behavior": "inset-swipe",
           "backgroundColor": "#000000"
@@ -61,7 +61,7 @@
         "position": "absolute",
         "visibility": "hidden",
         "behavior": "inset-swipe",
-        "backgroundColor": "#00000080"
+        "backgroundColor": "#000000"
       },
       "eas": {
         "projectId": "738965ad-52ad-4502-bb26-e3341641a968"
